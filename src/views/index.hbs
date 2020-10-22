@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+ <meta charset="UTF-8">
+ <!-- <meta http-equiv="refresh" content="3"/> -->
+  <title> Login </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
+  <!-- <script type="text/javascript" src=" https://apis.google.com/js/client.js?onload=onLoadCallback"></script> -->
+  <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="./css/login.css">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <link rel="icon" href="data:,">
+  <meta name="google-signin-client_id" content="824727614201-aqs7qs34hsspjj65abvvbj3luehgj1rc.apps.googleusercontent.com">
+ </head>
+ 
+ <body class="bgForm">
+
+    <div id="app">
+        <div class="container login col-md-3 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <div class="imgcontainer">
+                        <img src="./img/UNEAT.png" style="width: 100%; height: auto; " alt="UNIVERSIDAD EUROPEA DEL ATLÁNTICO" class="avatar">
+                    </div>
+            
+                    <div class="g-signin2 btn center px-3 py-2" data-onsuccess="onSignIn"></div>
+                    
+                    <hr>
+            
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sit, optio eius! Nostrum maiores earum maxime.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+ </body>
+ <script src="js/formulario.js"></script>
+ <script>
+	// gapi.load('auth2', function(){
+	// 	gapi.auth2.init();
+	// });
+
+    // gapi.client.load('plus', 'v1', function() {
+    //     console.log('plus loaded!');
+    //     onSignIn();
+    // });
+
+    //Function to reload a page after loaded
+    // window.onload = function() {
+    //     //considering there aren't any hashes in the urls already
+    //     if(!window.location.hash) {
+    //         //setting window location
+    //         window.location = window.location;
+    //         //using reload() method to reload web page
+    //         window.location.reload();
+    //     }
+    // }
+
+    function saveToken(correo){
+        console.log("entrando");
+        var url = "http://localhost:3000/links/autenticar";
+        
+        fetch(url, {
+        method: "POST",
+        body: JSON.stringify({ usuario: "asfo", contrasena: "holamundo" }),
+        headers: {
+            
+            "Content-Type": "application/json"
+            // "access-token": token
+        },
+        mode: 'cors',
+        cache: 'no-cache'  
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then((data) => {
+            var token = data['token']
+            console.log(token);
+            sessionStorage.setItem("token",token);
+            searchUsr(correo);
+            // window.location.href = '/formulario2.html';
+            //this.requestData(token);
+        })
+        .catch(function(err) {
+            console.error(err);
+        });
+      }
+
+	async function onSignIn(googleUser) {
+		var profile = googleUser.getBasicProfile();
+		console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+		console.log('Name: ' + profile.getName());
+		console.log('Image URL: ' + profile.getImageUrl());
+        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+        let id_token = googleUser.getAuthResponse().id_token;
+        console.log(id_token);
+        
+        var myUserEntity = {};
+        myUserEntity.Id = profile.getId();
+        myUserEntity.Name = profile.getName();
+        
+        //Store the entity object in sessionStorage where it will be accessible from all pages of your site.
+        sessionStorage.setItem('myUserEntity',JSON.stringify(myUserEntity));
+
+        // searchUsr(profile.getEmail);
+        saveToken(profile.getEmail());
+        // const redirection = await red();
+    }
+    
+    function searchUsr(correo){
+
+        console.log("entra");
+
+        var url = `http://localhost:3000/links/compare_email/${correo}`;
+
+        console.log("Paso");
+        console.log(url);
+        // e.preventDefault();
+
+        fetch(url,{
+        method: 'GET',            
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-type': 'application/json'
+        },
+        mode: 'cors',
+        cache: 'no-cache'
+        })
+        .then(response => {
+            return response.json();
+        }).then((data) => {
+            if(data.mensaje == "Ya existe una cuenta con ese correo"){
+                window.location.href = '/principal';
+            }else if(data.mensaje == "No existe una cuenta con ese correo"){
+                window.location.href = 'auth/signup';
+            }
+
+        console.log("data index ",data.mensaje);
+        })
+        .catch(function(err) {
+        console.error(err);
+        })
+    }
+
+    function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+    sessionStorage.clear();
+    auth2.disconnect();
+    window.location.href = '/';
+  }
+
+</script>
+</html>

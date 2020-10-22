@@ -1,0 +1,68 @@
+* {
+    box-sizing: border-box;
+}
+
+body{
+    background-color: wheat;
+}
+
+h1{
+    font-size: 40px;
+    margin: 20px auto;
+    font-family: Neuton;
+    font-weight: 400;
+    text-align: center;
+}
+
+
+.btns{
+    /* margin: 5% auto; */
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    display: inline-block;
+    width: 25%;
+    padding: .75rem 0;
+    margin: 0;
+    text-decoration: none;
+    color: #333;
+}
+
+.divBtn{
+    padding: 20px;
+    /* text-align: center; */
+}
+
+.header{
+    font-weight: bold;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.644);
+    color: white;
+}
+
+.labHead{
+    margin: 25px auto;
+}
+
+ul li {
+    display: inline;
+    text-align: center;
+}
+ 
+  
+.lab2:hover ~ hr {
+    margin-left: 25%;
+}
+  
+.help:hover ~ hr {
+    margin-left: 50%;
+}
+    
+hr {
+    height: 5px;
+    width: 25%;
+    margin: 0;
+    background: tomato;
+    border: none;
+    transition: .2s ease-in-out;
+}

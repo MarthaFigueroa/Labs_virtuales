@@ -1,0 +1,99 @@
+
+body{
+    margin: 5% 0;
+}
+
+.login{
+    /* background-color: rgba(134, 155, 250, 0.774); */
+    text-align: center;
+    padding: 2% 0 2% 0px;
+    width: 40%;
+    box-shadow: 0px 0px 5px 6px rgba(0,0,0,0.2);
+    background: white;
+    border-radius: 5px;
+}
+
+.card{
+    background-color: white;
+}
+
+.bgForm{
+    /* background-image: linear-gradient(to right bottom, #1698f9, #3caafa, #5fbbfa, #80cbf9, #a1daf8) !important; */
+	height: 100%;
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-image: linear-gradient(to right bottom, #1784be, #38a3dd, #54b1e2, #58baf3, #7bc7f3, #9ad8fb, #a0dbfc, #a7defd, #afe1fd, #b7e4fe, #bee7fe, #d6edfa);
+}
+
+.principal,  .btn-card{
+    /* background-color: rgba(96, 96, 243, 0.158); */
+    display: flex;
+    margin-left: 20px;
+    margin-right: 20px;
+    border: none;
+}
+
+.container{
+    text-align: center;
+    padding: 2% 0 2% 0px;
+}
+
+.btn-login{
+    margin: 2%;
+    border-radius: 20px;
+    color: black;
+    background-color: white;
+    border: none;
+    padding: 8px 25px;
+    padding-right: 50px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-card{
+    border-radius: 20px;
+    color: black;
+    background-color: white;
+    border: none;
+    padding: 0;
+    text-align: center;
+}
+
+.btn-login::after{
+    content: "";
+    margin-left: 5px;
+    margin-top: 3px;
+    width: 30px;
+    height: 30px;
+    background: url("../img/google-logo.png") no-repeat;
+    position: absolute;
+    display: inline-block;
+    background-size: 20px 20px;
+}
+
+h1{
+    /* color: white; */
+    margin: 5%;
+}
+
+p{
+    /* color: white; */
+    margin: 0 2%;
+}
+
+hr{
+    background-color: white;
+    margin: 5%;
+}
+
+.btn-login:hover{
+    border: rgba(151, 151, 151, 0.637) 1px solid;
+    text-decoration: none;
+    color: black;
+}
+
+.imgcontainer{
+    margin: 2rem auto;
+}

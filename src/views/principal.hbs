@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <link rel="stylesheet" href="./css/formulario.css">
+  <meta name="google-signin-client_id" content="824727614201-aqs7qs34hsspjj65abvvbj3luehgj1rc.apps.googleusercontent.com">
+  <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
+  <!-- <script type="text/javascript" src=" https://apis.google.com/js/client.js?onload=onLoadCallback"></script> -->
+  <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+  <link rel="icon" href="data:,">
+  <!-- <link rel="shortcut icon" href="#" /> -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <title>Laboratorios Virtuales</title>
+</head>
+<body class="bgForm">
+  <div id="app">
+
+  
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="imgcontainer">
+        <img src="img/UNEAT.png" style="width: 220px; height: 80px; " alt="UNIVERSIDAD EUROPEA DEL ATLÁNTICO" class="avatar">
+      </div>
+      <div class="collapse navbar-collapse navbarTogglerDemo01" id="">
+        
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0"></ul>
+        <form class="form-inline my-2 my-lg-0">
+              <li class="nav-item dropdown" style="list-style-type: none;">
+                  <a class="nav-link dropdown-toggle btn btn-nav btn-light" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(54, 54, 54); font-size: 25px;">
+                    <i class="fa fa-user"></i>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                  <p class="dropdown-item" readonly><i class="fa fa-user mr-2"></i><label id="usuario" style="color: black; display: inline;"></label> </p>
+                  <p class="dropdown-item" readonly><i class="fa fa-envelope mr-2"></i><label id="email" style="color: black; display: inline;"></label> </p>
+                  <p class="dropdown-item" readonly><i class="fa fa-briefcase mr-2"></i><label id="grado" style="color: black; display: inline;"></label> </p>
+                  <p class="dropdown-item" readonly><i class="fa fa-bookmark mr-2"></i><label id="carne" style="color: black; display: inline;"></label> </p>
+                  <a class="dropdown-item" href="#" id="logout" onclick="signOut()">
+                    <i class="fa fa-sign-out mr-2" aria-hidden="true"></i>
+                    Finalizar Sesión</a>
+                  </div>
+              </li>
+        </form>
+      </div>
+    </nav>
+
+      
+      <!-- <div class="imgcontainer">
+          <img src="./img/logoWhite-new.png" style="width: 300px; height: 100px; " alt="UNIVERSIDAD EUROPEA DEL ATLÁNTICO" class="avatar">
+      </div> -->
+      <div class="g-signin2 btn center px-3 py-2" data-onsuccess="onSignIn" hidden></div>
+      <div class="container mt-4">
+        <div class="row justify-content-center align-items-center">
+          
+          <div class="col-lg-4 col-md-8 col-sm-12 mb-4 col-12 text-center">
+                <br>
+              <div class="card card-profile gray-card">
+                <div class="rounded-circle profile-img">
+                  <img src="img/gestion.png" alt="" class="card-img-top rounded-circle" style="vertical-align: middle;">
+                </div>
+
+                <div class="m-3 mt-5 pt-5 pb-0 text-center">
+                  <h5 class="card-title py-4">Gestor de reservas de Laboratorios</h5>
+                  <div class="line"></div>
+                  <a class="btn btn-primary" onclick="saveTokenForm()">Reservar</a>
+                  {{!-- <div class="h3 heading-style-1 heading-style-1--center heading-border--pastel-green color-dimgray text-uppercase mt-3">Habitaciones modernas</div>
+                  <p>Los estudios y apartamentos son  luminosos y están muy bien equipados</p> --}}
+                </div>
+                
+                <div class="card-body text-center">
+                  <!-- <p class="card-text text-justify">eifdkjsmc njhbdyufgwajs</p>
+                  <a href="" class="btn btn-success">LOL</a> -->
+                </div>
+                {{!-- <button onclick="saveTokenForm()">holaaaaaaaaa</button> --}}
+              </div>
+            </a>
+            
+          </div>
+
+          <div class="col-lg-4 col-md-8 col-sm-12 mb-4 col-12 text-center">
+                <br>
+              <div class="card card-profile gray-card">
+                <div class="rounded-circle profile-img">
+                  <img src="img/acceso.png" alt="" class="card-img-top rounded-circle" style="vertical-align: middle;">
+                </div>
+
+                <div class="m-3 mt-5 pt-5 pb-0 text-center">
+                  <h5 class="card-title py-4">Disponibilidad de Laboratorios</h5>
+                  <div class="line"></div>
+                  <a class="btn btn-primary" onclick="saveTokenCalendar()">Disponibilidad</a>
+                  {{!-- <div class="h3 heading-style-1 heading-style-1--center heading-border--pastel-green color-dimgray text-uppercase mt-3">Habitaciones modernas</div>
+                  <p>Los estudios y apartamentos son  luminosos y están muy bien equipados</p> --}}
+                </div>
+                
+                <div class="card-body text-center">
+                  <!-- <p class="card-text text-justify">eifdkjsmc njhbdyufgwajs</p>
+                  <a href="" class="btn btn-success">LOL</a> -->
+                </div>
+                {{!-- <button onclick="saveTokenForm()">holaaaaaaaaa</button> --}}
+              </div>
+            </a>
+            
+          </div>
+
+          <div class="col-lg-4 col-md-8 col-sm-12 mb-4 col-12 text-center">
+                <br>
+              <div class="card card-profile gray-card">
+                <div class="rounded-circle profile-img">
+                  <img src="img/ayuda.png" alt="" class="card-img-top rounded-circle" style="vertical-align: middle;">
+                </div>
+
+                <div class="m-3 mt-5 pt-5 pb-0 text-center">
+                  <h5 class="card-title py-4">Ayuda</h5>
+                  <div class="line"></div>
+                  <a class="btn btn-primary" data-toggle="modal" data-target="#helpModal">Ayuda</a>
+                  {{!-- <div class="h3 heading-style-1 heading-style-1--center heading-border--pastel-green color-dimgray text-uppercase mt-3">Habitaciones modernas</div>
+                  <p>Los estudios y apartamentos son  luminosos y están muy bien equipados</p> --}}
+                </div>
+                
+                <div class="card-body text-center">
+                  <!-- <p class="card-text text-justify">eifdkjsmc njhbdyufgwajs</p>
+                  <a href="" class="btn btn-success">LOL</a> -->
+                </div>
+                {{!-- <button onclick="saveTokenForm()">holaaaaaaaaa</button> --}}
+              </div>
+            </a>
+            
+          </div>
+
+        </div>
+      </div>
+  
+
+  <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div id="modal-header" class="modal-header" >
+          <h5 class="modal-title" id="exampleModalLabel">Reserva</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div id="modal-content" class="modal-body text-center">
+          <!-- YA SE HA REALIZADO UNA RESERVA DIARIA.
+          <br>
+          POR FAVOR VUELVA A INTENTAR EL PRÓXIMO DÍA. -->
+          <div id="help" class="container mx-auto divContent p-0" style="text-align: justify; font-size: 20px;">
+            <p class="text-center" style="font-weight: bold;">Esta es la sección de ayuda.</p>
+            <br>
+            <p>
+              Obtén mayor información sobre como mantenerte al tanto de la disponibilidad de los laboratorios virtuales en la Universidad.
+              <br>    
+              Todo esto mediante un trabajo y uso de estas de forma remota.
+              <br>     
+              Podrás resolver muchas de tus consultas por ti mismo gracias a la plataforma. Puedes hacer el seguimiento de tus reservas y disponibilidad. 
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</body>
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+  {{!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> --}}
+  <script src="js/formulario.js"></script>
+  <script src="https://kit.fontawesome.com/0899977927.js" crossorigin="anonymous"></script>
+<script>
+
+// window.onchange=function myFunction() {
+//   var w = window.innerWidth;
+//   var h = window.innerHeight;
+//   console.log("Width: " + w + " Height: " + h);
+// }
+
+  function form_render(){
+    var url = "http://localhost:3000/links/formulario";
+    
+    fetch(url, {
+    method: "GET",
+    headers: {
+        
+        "Content-Type": "application/json"
+        // "access-token": token
+    },
+    mode: 'cors',
+    cache: 'no-cache'  
+    })
+    .then(response => {
+        return response.json();
+    })
+    .then((data) => {
+        //this.requestData(token);
+    })
+    .catch(function(err) {
+        console.error(err);
+    });
+  }
+
+  function saveTokenForm(){
+
+    var url = "http://localhost:3000/links/autenticar";
+    
+    fetch(url, {
+    method: "POST",
+    body: JSON.stringify({ usuario: "asfo", contrasena: "holamundo" }),
+    headers: {
+        
+        "Content-Type": "application/json"
+        // "access-token": token
+    },
+    mode: 'cors',
+    cache: 'no-cache'  
+    })
+    .then(response => {
+        return response.json();
+    })
+    .then((data) => {
+        var token = data['token'];
+        sessionStorage.setItem("token",token);
+        window.location.href = '/formulario_reserva';
+        //form_render();
+        //this.requestData(token);
+    })
+    .catch(function(err) {
+        console.error(err);
+    });
+  }
+
+
+  function saveTokenCalendar(){
+    var url = "http://localhost:3000/links/autenticar";
+    
+    fetch(url, {
+    method: "POST",
+    body: JSON.stringify({ usuario: "asfo", contrasena: "holamundo" }),
+    headers: {
+        
+        "Content-Type": "application/json"
+        // "access-token": token
+    },
+    mode: 'cors',
+    cache: 'no-cache'  
+    })
+    .then(response => {
+        return response.json();
+    })
+    .then((data) => {
+        var token = data['token']
+        sessionStorage.setItem("token",token);
+        window.location.href = '/disponibilidad_reserva';
+        //this.requestData(token);
+    })
+    .catch(function(err) {
+        console.error(err);
+    });
+  }
+
+
+    function onSignIn(googleUser) {
+    var profile = googleUser.getBasicProfile();
+    // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    // console.log('Name: ' + profile.getName());
+    // console.log('Image URL: ' + profile.getImageUrl());
+    // console.log('Email: ' + profile.getEmail());
+    let id_token = googleUser.getAuthResponse().id_token;
+    // console.log(id_token);
+    
+    // document.getElementById('email').innerHTML = profile.getEmail();
+    // document.getElementById('usuario').innerHTML = profile.getName();
+
+    infoUsr(profile.getEmail());
+
+    // console.log(sessionStorage.getItem('token'));
+  }
+
+  function infoUsr(correo){
+
+    var url = `http://localhost:3000/links/dataUsr/${correo}`;
+
+    // this.preventDef();
+
+    fetch(url,{
+    method: 'GET',            
+    headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-type': 'application/json'
+    },
+    mode: 'cors',
+    cache: 'no-cache'
+    })
+    .then(response => {
+      return response.json();
+    }).then((data) => {
+      document.getElementById('email').innerHTML = data.info[0].Email;
+      document.getElementById('usuario').innerHTML = data.info[0].Nombre;
+      document.getElementById('grado').innerHTML = data.info[0].grado_id;
+      document.getElementById('carne').innerHTML = data.info[0].Numero_carne;
+    })
+    .catch(function(err) {
+      console.error(err);
+    })
+  }
+
+  $(document).ready(function(){
+    if((sessionStorage.getItem('myUserEntity')||(sessionStorage.getItem('token'))) == null){ // (sessionStorage.getItem('myUserEntity')||(sessionStorage.getItem('token')))
+      //Redirect to login page, no user entity available in sessionStorage
+      window.location.href='/';
+    }
+  }); 
+  function myFunction() {
+    var x = document.getElementById("myTopnav");
+    if (x.className === "topnav") {
+        x.className += " responsive";
+    } else {
+        x.className = "topnav";
+    }
+    }
+
+  function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+    sessionStorage.clear();
+    auth2.disconnect();
+    window.location.href = '/';
+  }
+</script>
+</html>

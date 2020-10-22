@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/formulario.css">
+    <link rel="icon" href="data:,">
+    <meta name="google-signin-client_id" content="824727614201-aqs7qs34hsspjj65abvvbj3luehgj1rc.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Formulario-Usuario</title>
+</head>
+<body class="bgForm" style="overflow-y: hidden;">
+  <div class="g-signin2 btn center px-3 py-2" data-onsuccess="onSignIn" hidden></div>
+  <div class="container p-4" id="app">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h3>Registrarse</h3>
+                </div>
+                <div class="card-body">
+                    <form action="/signup" method="post">
+                        <div class="g-signin2 btn center px-3 py-2" data-onsuccess="onSignIn" hidden></div>
+                        <!-- <label class="lbl">Nombre</label> -->
+                        <div class="form-group">
+                            <input type="text" id="nombre" placeholder="Nombre" class="mb-3">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" id="apellidos" placeholder="Apellidos" class="mb-3">
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="text" id="correo" placeholder="Correo Electrónico" readonly>
+                        </div>
+            
+                        <label class="ml-2" style="opacity: 0.5;">Grado</label>
+                          <div class="form-group">
+                            <select id="grado">
+                                <option value="Ingeniería Informática">Ingeniería Informática</option>
+                                <option value="Ingeniería Organización Industrial">Ingeniería Organización Industrial</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="text" id="curso" placeholder="Curso" class="my-3">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" id="carne" placeholder="Número de Carné" class="mb-3">
+                        </div>
+                        
+                        <div class="form-group btnDiv">
+                          <input type="button" href="/" onclick="signOut()" class="btn btn-light" value="Cancelar">
+                          <button type="button" class="btn btn-blue" @click="create_usr">Enviar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Modal -->    
+    <div class="modal fade" id="noReservaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div id="modal-header" class="modal-header" >
+            <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div id="modal-content" class="modal-body text-center">
+            <!-- YA SE HA REALIZADO UNA RESERVA DIARIA.
+            <br>
+            POR FAVOR VUELVA A INTENTAR EL PRÓXIMO DÍA. -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" id="no_reserva" class="btn btn-primary" data-toggle="modal" data-target="#noReservaModal" hidden>
+      No se puede reservas
+    </button>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="js/formulario.js"></script>
+<script>
+
+  function onSignIn(googleUser) {
+		var profile = googleUser.getBasicProfile();
+
+    document.getElementById('correo').value = profile.getEmail();
+    // document.getElementById('nombre').value = profile.getName();
+
+    console.log(sessionStorage.getItem('token'));
+  }
+
+  $(document).ready(function(){
+    if((sessionStorage.getItem('myUserEntity')||(sessionStorage.getItem('token'))) == null){ // (sessionStorage.getItem('myUserEntity')||(sessionStorage.getItem('token')))
+      //Redirect to login page, no user entity available in sessionStorage
+      window.location.href='/principal.html';
+    }
+  }); 
+
+  function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+    sessionStorage.clear();
+    auth2.disconnect();
+    window.location.href = '/';
+  }
+</script>
+</html>

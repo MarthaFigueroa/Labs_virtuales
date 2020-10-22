@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Reservar sala</title>
+  <link rel="icon" href="data:,">
+  <meta name="google-signin-client_id" content="824727614201-aqs7qs34hsspjj65abvvbj3luehgj1rc.apps.googleusercontent.com">
+  <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
+  <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="./css/formulario.css">
+</head>
+<body class="bgForm">
+    
+  <div id="app" class="container page-wrapper bg-gra-01 p-t-180 p-b-100 font-poppins">
+    <div :class="['p-5', 'bg-light','my-5', 'form']" class="wrapper wrapper--w780 card">
+      <div class="container text-center" id="alertCont" style="border: none !important; box-shadow: none !important;"></div>  
+      <div class="font-poppins">
+        <div>
+          <!-- <a href="#" style="float: right;" onclick="signOut();">Sign out</a> -->
+          <a href="/principal" style="float: left;">Regresar</a>
+          <form action="/links/aceptar_reserva" method="POST">
+            <div class="card-3">
+              <div class="card-body">
+                
+                <div class="col-md-12 mt-4 pb-3">
+                  
+                  <div class="imgcontainer mb-4 mx-auto text-center">
+                    <img src="../../img/UNEAT.png" style="width: 70%; height: auto; " alt="UNIVERSIDAD EUROPEA DEL ATLÁNTICO" class="avatar mx-auto text-center">
+                  </div>
+                  <div class="g-signin2 btn center px-3 py-2" data-onsuccess="onSignIn" hidden></div>
+                </div>
+                
+                {{!-- <form ref="form" name="form1" :class="['mx-auto']"> --}}
+
+                <div class="form-row">                    
+                      <h5 style="font-weight: bold; margin: 3% 0;">Detalles de la reserva:</h5>
+                </div>
+
+                <div style="display: block; margin: 15px auto;">
+                  <div>
+                    <label for="">Duración de la Reserva: </label>
+                  </div>
+                  <select id="duration"> 
+                    <!-- Puede ser v-bind:value="option.value" -->
+                    <option value="30">30 Minutos</option>
+                    <option value="60">1 Hora</option>
+                    <option value="90">1 Hora y 30 Minutos</option>
+                    <option value="120">2 Horas</option>
+                  </select>
+                </div>
+                <!-- <button :class="['btn', 'btn-blue', 'reserva', 'px-3']" onclick="horaInicio()" id="bot">HORA →</button> -->
+                <div class="form-row">            
+                    <div class="form-group col-md-6">
+                      <label for="">Fecha de Inicio: </label>
+                      <input id="fechaIni" class="form-control" type="date" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6" hidden>
+                      <label for="">Fecha de Fin: </label>
+                      <input id="fechaFin" class="form-control" type="date"> 
+                      <!-- <button @click="valueFin">value</button> -->
+                    </div>
+                    
+                    <div class="form-group col-md-6">
+                      <label for="" style="display: block;">Hora de Inicio: </label>
+                      <input id="horaIni" min="07:00" max="19:00" onchange="horaInicio()" type="time">
+                      <span class="validity"></span>
+                      <!-- <button @click="value">value</button> -->
+                    </div>    
+
+                    <div class="form-group col-md-6" hidden>
+                      <label for="" style="display: block;">Hora de Fin: </label>
+                      <input id="horaFin" min="07:30" max="19:00" onchange="horaInicio()" type="time">
+                      <span class="validity"></span>
+                      <button @click="valueFin">value</button>
+                    </div>
+                    <!-- <button @click="availability">value</button> -->
+
+                </div>
+
+                <div class="form-row" style="display: block; margin: 15px auto;">
+                  <div class="form-group">
+                      <label for="">Nombre de Usuario: </label>
+                      <div>
+                        <input type="text"
+                        required
+                        id="usr"
+                        placeholder="Nombre del usuario"
+                        @keyup.enter="valueUsr"
+                      >
+                      </div>
+                  </div>
+                  
+                </div>
+
+                <div class="form-row" style="display: block; margin: 15px auto;">
+                  <div class="form-group">
+                      <label for="">Nombre de la Reserva: </label>
+                      <div>
+                        <input type="text"
+                        required
+                        id="reserva"
+                        placeholder="Asunto"
+                        @keyup.enter="valueAsunto">
+                      </div>
+                  </div>
+                </div>
+                
+                <div class="form-row" style="display: block; margin: 15px auto;">
+                  <div class="form-group">
+                      <div>
+                        <label for="">Descripción: </label>  
+                      </div>
+                      <div>  
+                          <input type="text"  id="descripcion" placeholder="Email"  @keyup.enter="valueDescription" required>  
+                      </div>  
+                  </div>
+
+                </div>
+
+                <div class="form-row" style="display: block; margin: 15px auto;">
+                  <div class="form-group">
+                      <div>
+                        <label for="">Número de Sala: </label>
+                      </div>
+                      
+                      <div>
+                        <!-- @keyup.enter="valueRoom" -->
+                        <select id="room" v-model="selected"> 
+                          <!-- -->
+                          <!-- Puede ser v-bind:value="option.value" -->
+                          <option v-for="option in options" :value="option.value">
+                            Sala {{ option.text }}
+                          </option>
+                        </select>
+                      </div>
+                  </div>
+                
+                </div>
+
+                <button :class="['btn', 'btn-blue', 'reserva', 'px-3']" @click.prevent="requestData" id="bot">RESERVAR →</button>
+                  
+                  <!-- <button :class="['btn', 'btn-blue', 'reserva', 'px-3']" @click.prevent="availability">DISPONIBILIDAD →</button> -->
+                {{!-- </form> --}}
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->    
+    <div class="modal fade" id="noReservaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div id="modal-header" class="modal-header" >
+            <h5 class="modal-title" id="exampleModalLabel">Reserva</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div id="modal-content" class="modal-body text-center">
+            <!-- YA SE HA REALIZADO UNA RESERVA DIARIA.
+            <br>
+            POR FAVOR VUELVA A INTENTAR EL PRÓXIMO DÍA. -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" id="no_reserva" class="btn btn-primary" data-toggle="modal" data-target="#noReservaModal" hidden>
+      No se puede reservas
+    </button>
+  </div>
+
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="../../js/formulario.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>   
+<script>
+  
+function onSignIn(googleUser) {
+    var profile = googleUser.getBasicProfile();
+    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    console.log('Name: ' + profile.getName());
+    console.log('Image URL: ' + profile.getImageUrl());
+    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    let id_token = googleUser.getAuthResponse().id_token;
+    // console.log(id_token);
+    
+    document.getElementById('usr').value = profile.getName();
+    document.getElementById('descripcion').value = profile.getEmail();
+
+    console.log(sessionStorage.getItem('token'));
+}
+
+  $(document).ready(function(){
+    if((sessionStorage.getItem('myUserEntity')||(sessionStorage.getItem('token'))) == null){ // (sessionStorage.getItem('myUserEntity')||(sessionStorage.getItem('token')))
+      //Redirect to login page, no user entity available in sessionStorage
+      window.location.href='/principal.html';
+    }
+  }); 
+
+  function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+    sessionStorage.clear();
+    auth2.disconnect();
+    window.location.href = '/';
+  }
+
+  function horaInicio() {
+    
+    let finalCampo=document.getElementById('horaIni');  //El siguiente campo de hora contendrá la hora ingresada en la hora de inicio
+    let finCampo=document.getElementById('horaFin');
+    let inicioYMD=finalCampo.value;  //Muestra el value del campo de hora
+    let horaVal=document.getElementById('duration').value;  //Se obtiene el valor ingresado en el input de No. de semanas
+    finalCampo.step = "0";
+    finCampo.step = "0";
+
+    finalCampo.stepUp(horaVal);  //A la hora obtenida para el siguiente campo se le va incrementando la duración(30min, 60min, 90min, 120min).
+    finalCampo.step = "1800";
+    finCampo.step = "1800";
+    document.getElementById("horaFin").value= finalCampo.value; //El valor de la fechaFinal será el valor de la fechaInicio, e irá incrementando de a 7.
+    document.getElementById("horaIni").value= inicioYMD;  //El valor de la fechaInicio permanecerá sin cambios
+
+    // let finalCampo=document.getElementById('horaIni');  //El siguiente campo de hora contendrá la hora ingresada en la hora de inicio
+    // let finCampo=document.getElementById('horaFin');
+    // let inicioYMD=finalCampo.value;  //Muestra el value del campo de hora
+    // let horaVal=document.getElementById('duration').value;  //Se obtiene el valor ingresado en el input de No. de semanas
+    // finalCampo.step = "0";
+    // finCampo.step = "0";
+
+    // finalCampo.stepUp(horaVal);  //A la hora obtenida para el siguiente campo se le va incrementando la duración(30min, 60min, 90min, 120min).
+    // finalCampo.step = "1800";
+    // finCampo.step = "1800";
+    
+    
+    // document.getElementById("horaFin").value= finalCampo.value; //El valor de la fechaFinal será el valor de la fechaInicio, e irá incrementando de a 7.
+    // document.getElementById("horaIni").value= inicioYMD;
+    
+    // if(horaVal==30){
+    //     finalCampo.max ='19:00';
+    //     console.log("Max: 19:00");
+    //     console.log("Fin: ", finalCampo.value);
+    //     console.log("FinCampo: ", finCampo.value);
+        
+    // }else if(horaVal==60){
+    //     finalCampo.max ='18:30';
+    //     console.log("Max: 18:30");
+    //     console.log("Fin: ", finalCampo.value);
+    //     console.log("FinCampo: ", finCampo.value);
+    // }else if(horaVal==90){
+    //     finalCampo.max ='18:00';
+    //     console.log("Max: 18:00");
+    //     console.log("Fin: ", finalCampo.value);
+    //     console.log("FinCampo: ", finCampo.value);
+    // }else if(horaVal==120){
+    //     finalCampo.max ='17:30';
+    //     console.log("Max: 17:30");
+    //     console.log("Fin: ", finalCampo.value);
+    //     console.log("FinCampo: ", finCampo.value);
+    // }
+  }  
+</script>
+</html>
