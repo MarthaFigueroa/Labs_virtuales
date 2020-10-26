@@ -97,7 +97,7 @@ function showCalendar(month, year) {
                 cell.appendChild(cellText);
                 row.appendChild(cell);
                 changeTitle(cell);
-                toDate(cell);
+                toDate(cell,date);
                 date++;
             }
         }
@@ -112,13 +112,15 @@ function showCalendar(month, year) {
         });
     }
 
-    function toDate(cell){
+    function toDate(cell,date){
         cell.addEventListener("click", function(event){   
             event.preventDefault();
+            // cell.value = months[month]+" "+date+","+year;
             let dateCell = new Date(cell.value);  
             console.log("Fechaaa: ",dateCell);
+            console.log("date: "+date);
             // clearTimeTable();
-            timeTable(dateCell);
+            timeTable(dateCell, month, date, year);
         });
     }
 }
@@ -148,7 +150,20 @@ function createTimeColumn(){
     }
 }
 
-function timeTable(buttonDate){
+function toHour(cell, room){
+    cell.addEventListener("click", function(event){   
+        event.preventDefault();
+        let dateCell = cell.value;  
+        console.log("Horaaa: ", new Date(dateCell));
+        dateCell = cell.value +"_Room_"+room;
+        console.log("DateCell: "+dateCell);
+        clearTimeTable();
+        // timeTable(dateCell);
+        // clearTimeTable();
+    });
+}
+
+function timeTable(buttonDate, month, date, year){
 
     createTimeColumn();
 
@@ -163,23 +178,31 @@ function timeTable(buttonDate){
         };
         
         for(hora in disponibilidad){
-            // let head = 
+            
             let row = document.getElementById(hora);
             let cell = document.createElement("td");
-            let textoCell = document.createTextNode('');
-            cell.appendChild(textoCell);
+            // let textoCell = document.createTextNode('');
+            // cell.appendChild(textoCell);
             cell.setAttribute("id", room+"_"+hora);
+            
             let disponible = "Disponible";
-            cell.classList.add("disponible");
-            let text = document.createTextNode(disponible)
+            // cell.classList.add("disponible");
+            cell.setAttribute("data-toggle", "modal");
+            cell.setAttribute("data-target", "#exampleModal");
+            cell.setAttribute("class", "disponible");
+            cell.style.cursor="pointer";
+            let text = document.createTextNode(disponible);
+            cell.value =  months[month]+" "+date+" "+year+" "+hora;
+
             cell.appendChild(text);
             row.appendChild(cell);
+            toHour(cell, room);
             // console.log(cell.id);
         }
 
         fetchData(room, buttonDate, buttonDate, function(data) {
             
-            console.log("ROOM ",room, data);
+            // console.log("ROOM ",room, data);
             // console.log("Data Disponibilidad: ", data.disponibilidad);
             console.log("Disponibilidad: ", disponibilidad);
 
@@ -188,7 +211,7 @@ function timeTable(buttonDate){
                 disponibilidad = Disponibilidad(reserva, disponibilidad);
             }
             
-            console.log("JSON", disponibilidad);
+            // console.log("JSON", disponibilidad);
 
             if(data.disponibilidad.length>0){
                 displayDisponibilidad(disponibilidad,data.disponibilidad[0].room_id);
@@ -219,25 +242,32 @@ function Disponibilidad(reserva, json){
 }
 
 function displayDisponibilidad(disponibilidad, room){
-        for(hora in disponibilidad){
-            // let cell = document.createElement("td");
-            let cell = document.getElementById(room+"_"+hora);
+    // let cell;
+    for(hora in disponibilidad){
+        // let cell = document.createElement("td");
+        let cell = document.getElementById(room+"_"+hora);
+        let disponible;
             // let text = document.createTextNode('');
-            let disponible;
+            // console.log(cell.value);
             if(disponibilidad[hora]){
                 disponible = "Disponible";
                 // cell.value = disponible;
-                cell.classList.add("disponible");
+                // cell.classList.add('btn');
+                // cell.style.cursor="pointer";
+                // cell.setAttribute("class", "disponible");
+                cell.innerHTML = disponible;
             }
             else{
                 disponible = "Ocupado";
                 // cell.value = disponible;
-                cell.classList.add("ocupada");
+                // cell.style.cursor="pointer";
+                cell.setAttribute("class", "ocupada");
+                cell.innerHTML = disponible;
             }
             // text = document.createTextNode('');  
             // let text = document.createTextNode(disponible)
             // cell.appendChild(text);
-            cell.innerHTML = disponible;
+            // cell.innerHTML = disponible;
             // cell.removeChild(text);
         }
 
@@ -255,7 +285,7 @@ function fetchData(room, startTime, endTime, onData){
 
     startTime2 = startTime.replace(/\s/g, '&');
     endTime2 = endTime.replace(/\s/g, '&');
-    var url = 'http://localhost:3002/' +room+ '/' + startTime2 + '/' + endTime2 + '&24:00'; // ${room}/${startTime}/${endTime} 
+    var url = 'http://localhost:3000/links/' +room+ '/' + startTime2 + '/' + endTime2 + '&24:00'; // ${room}/${startTime}/${endTime} 
     //var url = 'http://172.27.9.66:3000/82/Sat&Mar&14&2020/Sat&Mar&14&2020&24:00';
  
     let reserva = {
@@ -278,7 +308,7 @@ function fetchData(room, startTime, endTime, onData){
     .then(function(response) {
         return response.json();
     }).then((data) => {
-        console.log("Message 2", data.mensaje);
+        // console.log("Message 2", data.mensaje);
         if(data.mensaje == "Token inválida"){
             
             document.getElementById("exampleModal").style.opacity = "0.8"; 
@@ -289,7 +319,7 @@ function fetchData(room, startTime, endTime, onData){
             // document.getElementById("modal-button").innerHTML = `<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>`;
 
             setTimeout(function(){ 
-                window.location.href = '/principal.html';//login.html
+                window.location.href = '/principal';//login.html
             }, 2000);
           }
         onData(data);

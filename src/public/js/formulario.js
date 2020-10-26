@@ -43,7 +43,7 @@ const app = new Vue({
 
         console.log("entra");
 
-        var url = `http://localhost:3000/compare_email/${correo}`;
+        var url = `http://localhost:3000/links/compare_email/${correo}`;
 
         console.log("Paso");
 
@@ -106,7 +106,7 @@ const app = new Vue({
 
           console.log(JSON.stringify(usr));
           
-          var url = "http://localhost:3000/create_usr";
+          var url = "http://localhost:3000/links/create_usr";
 
           this.preventDef(e);
           console.log("Paso");
@@ -143,7 +143,7 @@ const app = new Vue({
 
         console.log("entra");
 
-        var url = `http://localhost:3000/dataUsr/${correo}`;
+        var url = `http://localhost:3000/links/dataUsr/${correo}`;
 
         console.log("Paso");
 
@@ -220,7 +220,7 @@ const app = new Vue({
 
           console.log(JSON.stringify(reserva));
           
-          var url = "http://localhost:3000/aceptar_reserva";
+          var url = "http://localhost:3000/links/aceptar_reserva";
 
           this.preventDef(e);
           console.log("Paso");
@@ -285,7 +285,7 @@ const app = new Vue({
                 console.log("Id: ",id_reserva);
                 sessionStorage.setItem("id_reserva",id_reserva);
                 // this.signOut();
-                // window.location.href = '/ReservaExitosa.html';
+                window.location.href = '/ReservaExitosa';
               }
             })
             .catch(function(err) {
@@ -392,7 +392,7 @@ const app = new Vue({
       },
       saveToken(){
         console.log("entrando");
-        var url = "http://localhost:3000/autenticar";
+        var url = "http://localhost:3000/links/autenticar";
         
         fetch(url, {
         method: "POST",

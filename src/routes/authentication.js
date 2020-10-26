@@ -34,6 +34,10 @@ router.get('/formulario_reserva', (req, res)=>{
     res.render('links/formulario_reserva');
 });
 
+router.get('/ReservaExitosa', (req, res)=>{
+    res.render('links/ReservaExitosa');
+});
+
 router.get('/disponibilidad_reserva', (req, res)=>{
     res.render('links/disponibilidad_reserva');
 });

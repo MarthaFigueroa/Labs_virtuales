@@ -10,7 +10,7 @@
   <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
   <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="./css/formulario.css">
+  {{!-- <link rel="stylesheet" href="./css/formulario.css"> --}}
 </head>
 <body class="bgForm">
     
@@ -134,9 +134,15 @@
                         <select id="room" v-model="selected"> 
                           <!-- -->
                           <!-- Puede ser v-bind:value="option.value" -->
-                          <option v-for="option in options" :value="option.value">
-                            Sala {{ option.text }}
-                          </option>
+                          {{!-- <option v-for="option in options" :value="option.value">
+                            Sala {{ option.value }}
+                          </option> --}}
+                          <option value="80">Sala 1</option>
+                          <option value="81">Sala 2</option>
+                          <option value="82">Sala 3</option>
+                          <option value="83">Sala 4</option>
+                          <option value="84">Sala 5</option>
+                          <option value="85">Sala 6</option>
                         </select>
                       </div>
                   </div>
@@ -181,7 +187,7 @@
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script src="../../js/formulario.js"></script>
+<script src="./js/formulario.js"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>   
