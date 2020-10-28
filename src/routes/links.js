@@ -713,7 +713,7 @@ let sendEmail = function(id, mail, day, hour){
 
 
 		Si desea eliminar su reserva puede dar click en el siguiente enlace</p><br>
-		<a href="http://localhost:3000/ReservaEliminada.html?id=${id}&usuario=${mail}">Eliminar Reserva</a><br>
+		<a href="http://localhost:3000/ReservaEliminada?id=${id}&usuario=${mail}">Eliminar Reserva</a><br>
 		<p>Se ha creado un evento a partir de los datos de la reserva, si desea verificar la hora y lugar de la reserva debe revisar el evento en Google Calendar</p>` //onclick="${confirmation(id)}"
 	};
 	// Enviamos el email

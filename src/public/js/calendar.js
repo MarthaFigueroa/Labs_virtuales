@@ -153,13 +153,34 @@ function createTimeColumn(){
 function toHour(cell, room){
     cell.addEventListener("click", function(event){   
         event.preventDefault();
-        let dateCell = cell.value;  
-        console.log("Horaaa: ", new Date(dateCell));
-        dateCell = cell.value +"_Room_"+room;
-        console.log("DateCell: "+dateCell);
+        let dateCell = new Date(cell.value);  
+        let asunto = "Asunto", createBy="Martha", descripcion="martha.marquez@alumnos.uneatlantico.es"
+        let dateCellEnd = new Date(dateCell);
+        dateCellEnd.setHours(dateCellEnd.getHours(), dateCellEnd.getMinutes() +30);
+        console.log(dateCell, dateCellEnd);
+        console.log("Horaaa: ", dateCell);
+        // dateCell = cell.value +"_Room_"+room;
+        // console.log("DateCell: "+dateCell);
         clearTimeTable();
-        // timeTable(dateCell);
-        // clearTimeTable();
+
+        onSignIn(googleUser);
+
+        requestData(dateCell, dateCellEnd, room, asunto, createBy, descripcion);
+
+        let reserva = {
+            "reserva":{
+              "start_time": dateCell,
+              "end_time": dateCellEnd,
+              "room_id": parseInt(room),
+              "create_by": "Martha",
+              "name": "Asunto",
+              "description": "Descripcion"
+            }
+        }
+        console.log("Su reserva sería: ", reserva);
+        timeTable(dateCell);
+        clearTimeTable();
+
     });
 }
 
@@ -190,13 +211,16 @@ function timeTable(buttonDate, month, date, year){
             cell.setAttribute("data-toggle", "modal");
             cell.setAttribute("data-target", "#exampleModal");
             cell.setAttribute("class", "disponible");
-            cell.style.cursor="pointer";
+            
             let text = document.createTextNode(disponible);
             cell.value =  months[month]+" "+date+" "+year+" "+hora;
-
+            cell.style.cursor="pointer";
             cell.appendChild(text);
             row.appendChild(cell);
-            toHour(cell, room);
+
+            // if(cell.getElementsByClassName('disponible')){
+                toHour(cell, room);
+            // }
             // console.log(cell.id);
         }
 
@@ -207,11 +231,11 @@ function timeTable(buttonDate, month, date, year){
             console.log("Disponibilidad: ", disponibilidad);
 
             for(reserva of data.disponibilidad) {
-                // console.log("Reserva: ", reserva);
+                console.log("Reservas no disponibles: ", reserva);
                 disponibilidad = Disponibilidad(reserva, disponibilidad);
             }
             
-            // console.log("JSON", disponibilidad);
+            console.log("JSON", disponibilidad);
 
             if(data.disponibilidad.length>0){
                 displayDisponibilidad(disponibilidad,data.disponibilidad[0].room_id);
@@ -255,6 +279,7 @@ function displayDisponibilidad(disponibilidad, room){
                 // cell.classList.add('btn');
                 // cell.style.cursor="pointer";
                 // cell.setAttribute("class", "disponible");
+                // toHour(cell, room);
                 cell.innerHTML = disponible;
             }
             else{
@@ -286,14 +311,8 @@ function fetchData(room, startTime, endTime, onData){
     startTime2 = startTime.replace(/\s/g, '&');
     endTime2 = endTime.replace(/\s/g, '&');
     var url = 'http://localhost:3000/links/' +room+ '/' + startTime2 + '/' + endTime2 + '&24:00'; // ${room}/${startTime}/${endTime} 
-    //var url = 'http://172.27.9.66:3000/82/Sat&Mar&14&2020/Sat&Mar&14&2020&24:00';
+    //var url = 'http://172.27.9.66:3000/links/82/Sat&Mar&14&2020/Sat&Mar&14&2020&24:00';
  
-    let reserva = {
-        "start_time": startTime,
-        "end_time": endTime,
-        "room_id": room
-    }
-
     fetch(url,{
       method: 'GET',            
       headers: {
@@ -321,7 +340,7 @@ function fetchData(room, startTime, endTime, onData){
             setTimeout(function(){ 
                 window.location.href = '/principal';//login.html
             }, 2000);
-          }
+        }
         onData(data);
         // if(data.message == "undefined"){
         //     window.location.href("/login.html");
@@ -337,3 +356,172 @@ function fetchData(room, startTime, endTime, onData){
         console.error(err);
     });
 }
+
+function requestData(fecha1, fecha2, room, asunto, createBy, descripcion){
+        
+    const myToken = sessionStorage.getItem("token");
+    console.log("my token GG ", myToken);
+    
+    fecha1.setHours(fecha1.getHours() + 2);
+    let minutos = new Date(fecha1);
+    let min = minutos.getMinutes();
+    console.log("Fecha 1: ", fecha1);
+    fecha2.setHours(fecha2.getHours() + 2);
+    var mailformat = /^\w+([\.-]?\w+)*@alumnos.uneatlantico.es/;
+    var mailformat2 = /^\w+([\.-]?\w+)*@uneatlantico.es/;
+
+    if(descripcion.match(mailformat) || descripcion.match(mailformat2) ){
+      console.log("Correct!"); // document.form1.email.focus();
+
+      console.log("entra");
+      
+      let reserva = {
+        "reserva":{
+          "start_time": fecha1,
+          "end_time": fecha2,
+          "room_id": parseInt(room),
+          "create_by": createBy,
+          "name": asunto,
+          "description": descripcion
+        }
+      }
+
+      console.log(JSON.stringify(reserva));
+      
+      var url = "http://localhost:3000/links/aceptar_reserva";
+
+    //   this.preventDef(e);
+      console.log("Paso");
+      //  
+      if((min==0 || min == 30)){
+
+        fetch(url,{
+          method: 'POST',            
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-type': 'application/json',
+            'access-token': myToken
+          },
+          body: JSON.stringify(reserva),
+          mode: 'cors',
+          cache: 'no-cache'
+        })
+        .then(response => {
+            return response.json();
+        }).then((data) => {
+          console.log("data ",data);
+          if(data.mensaje == "Ya se ha realizado una reserva diaria."){
+            // alert("YA SE HA REALIZADO UNA RESERVA DIARIA");
+            document.getElementById('no_reserva').click();
+            document.getElementById("modal-content").innerHTML = `
+            YA SE HA REALIZADO UNA RESERVA DIARIA.
+            <br>
+            POR FAVOR VUELVA A INTENTAR EL PRÓXIMO DÍA.`;
+            document.getElementById("modal-button").innerHTML = `<a type="button" href="/" class="btn btn-primary">Login</a>`;
+          }else if(data.mensaje == "Token inválida"){
+            
+            document.getElementById('no_reserva').click();
+            document.getElementById("modal-content").innerHTML = `
+            SU SESIÓN HA EXPIRADO, VUELVA A INICIAR SESIÓN.`;
+            // document.getElementById("modal-button").innerHTML = `<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>`;
+
+            setTimeout(function(){ 
+              window.location.href = '/';
+            }, 2000);
+
+          }else if(data.mensaje == "No hay disponibilidad"){
+            
+            document.getElementById('no_reserva').click();
+            document.getElementById("modal-content").innerHTML = `
+            YA EXISTE UNA RESERVA A ESA HORA Y SALA.
+            <br>
+            POR FAVOR VUELVA A INTENTAR EN UNA SALA U HORA DIFERENTE`;
+
+          }else{
+            let id_reserva = data.id;
+            console.log("Id: ",id_reserva);
+            sessionStorage.setItem("id_reserva",id_reserva);
+            // this.signOut();
+            window.location.href = '/ReservaExitosa';
+          }
+        })
+        .catch(function(err) {
+          console.error(err);
+        })
+      }else{
+        document.getElementById('no_reserva').click();
+        document.getElementById("modal-content").innerHTML = `
+        NO SE HA REALIZADO LA RESERVA.
+        <br>
+        POR FAVOR VUELVA A INTENTAR INGRESANDO UNA HORA VÁLIDA.`;
+        // document.getElementById("modal-button").innerHTML = `<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>`;
+        // alert("You have entered an invalid hour!"); // document.form1.email.focus();
+      }
+    }
+    else{
+      document.getElementById('no_reserva').click();
+      document.getElementById("modal-content").innerHTML = `
+      NO SE HA REALIZADO LA RESERVA.
+      <br>
+      POR FAVOR VUELVA A INTENTAR INGRESANDO UNA DIRECCIÓN DE CORREO VÁLIDA.`;
+      document.getElementById("modal-button").innerHTML = `<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>`;
+      // alert("You have entered an invalid email address!"); // document.form1.email.focus();
+    }
+  }
+
+  function onSignIn(googleUser) {
+    var profile = googleUser.getBasicProfile();
+    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    console.log('Name: ' + profile.getName());
+    console.log('Image URL: ' + profile.getImageUrl());
+    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    let id_token = googleUser.getAuthResponse().id_token;
+    // console.log(id_token);
+    infoUsr(profile.getEmail());
+    //console.log(sessionStorage.getItem('token'));
+}
+
+  $(document).ready(function(){
+    if((sessionStorage.getItem('myUserEntity')||(sessionStorage.getItem('token'))) == null){ // (sessionStorage.getItem('myUserEntity')||(sessionStorage.getItem('token')))
+      //Redirect to login page, no user entity available in sessionStorage
+      window.location.href='/principal';
+    }
+  }); 
+
+  function infoUsr(correo){
+
+    var url = `http://localhost:3000/links/dataUsr/${correo}`;
+
+    console.log("Correo: ", correo);
+    // this.preventDef();
+
+    fetch(url,{
+    method: 'GET',            
+    headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-type': 'application/json'
+    },
+    mode: 'cors',
+    cache: 'no-cache'
+    })
+    .then(response => {
+      return response.json();
+    }).then((data) => {
+      //document.getElementById('email').innerHTML = data.info[0].Email;
+      console.log(data.info[0]);
+      return data;
+    })
+    .catch(function(err) {
+      console.error(err);
+    })
+  }
+
+  function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+    sessionStorage.clear();
+    auth2.disconnect();
+    window.location.href = '/';
+  }

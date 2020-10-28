@@ -38,6 +38,10 @@ router.get('/ReservaExitosa', (req, res)=>{
     res.render('links/ReservaExitosa');
 });
 
+router.get('/ReservaEliminada', (req, res)=>{
+    res.render('links/ReservaEliminada');
+});
+
 router.get('/disponibilidad_reserva', (req, res)=>{
     res.render('links/disponibilidad_reserva');
 });
