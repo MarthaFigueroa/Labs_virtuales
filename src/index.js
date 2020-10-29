@@ -6,6 +6,8 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session');
 const passport = require('passport');
+const cookieSession = require('cookie-session');
+require('../src/lib/passport');
 const { database } = require('./keys');
 
 // Initializations
@@ -58,6 +60,38 @@ app.use('/links', require('./routes/links')); //a los links les proceda el /link
 
 //Public
 app.use(express.static(path.join(__dirname, 'public')));
+//Configure Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// app.use(cookieSession({
+// 	name: 'session-name',
+// 	keys: ['key1', 'key2']
+// }));
+
+const checkUserLoggedIn = (req, res, next) => {
+	req.user ? next(): res.sendStatus(401);
+}
+
+// Auth Routes
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+  
+app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/failed' }),
+  function(req, res) {
+    res.redirect('/principal');
+  }
+);
+
+//Protected Route.
+app.get('/principal', checkUserLoggedIn, (req, res) => {
+    res.send(`<h1>${req.user.displayName}'s Profile Page</h1>
+        <a href="/prueba">LOL</a>
+    `)
+});
+
+app.get('/prueba', (req, res)=>{
+    res.send(`<h1>Still ${req.user.displayName}'s Profile Page xd</h1>`)
+});
 
 //Starting Server
 app.listen(app.get('port'), () => {

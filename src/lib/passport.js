@@ -1,9 +1,36 @@
 const passport = require('passport');
-const LocalStrategy = require('passport-local');
+// const LocalStrategy = require('passport-local');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
-const helpers = require('../lib/helpers');
+// const helpers = require('../lib/helpers');
 
-const pool = require('../database'); //Conectar con db
+// const pool = require('../database'); //Conectar con db
+
+//Guarda el usr que está autenticando en una session, guarda su id
+//Este al ser guardado, se puede utilizar en las variables Globales del index.js
+passport.serializeUser((user, done)=>{
+    // done(null, user.id);
+    done(null, user);
+});
+
+//Deserializa el Usuario a partir de verificar que exista el id en db
+passport.deserializeUser((user, done)=>{
+    // const rows = await pool.query('SELECT * FROM users WHERE id = ?', [id]);
+    // done(null, rows[0]); //En caso de error al deserialize establecer a true rows[0]
+    done(null, user);
+});
+
+passport.use(new GoogleStrategy({
+    clientID: "824727614201-aqs7qs34hsspjj65abvvbj3luehgj1rc.apps.googleusercontent.com",
+    clientSecret: "E_XjRIaujSaHd_aaNcF3FJNO",
+    callbackURL: "http://localhost:3000/auth/google/callback"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    return cb(null, profile);
+  }
+));
+
+/*
 
 passport.use('local.signin', new LocalStrategy({
     usernameField: 'username',
@@ -55,16 +82,4 @@ passport.use('local.signup', new LocalStrategy({
     newUser.id = result.insertId;
     return done(null, newUser); //Null para no error, y manda el obj. del newUser 
 }));
-
-
-//Guarda el usr que está autenticando en una session, guarda su id
-//Este al ser guardado, se puede utilizar en las variables Globales del index.js
-passport.serializeUser((user, done)=>{
-    done(null, user.id);
-});
-
-//Deserializa el Usuario a partir de verificar que exista el id en db
-passport.deserializeUser(async (id, done)=>{
-    const rows = await pool.query('SELECT * FROM users WHERE id = ?', [id]);
-    done(null, rows[0]); //En caso de error al deserialize establecer a true rows[0]
-});
+*/
