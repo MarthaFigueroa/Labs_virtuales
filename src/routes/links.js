@@ -12,7 +12,7 @@ const nodemailer = require("nodemailer");
 const fs = require('fs');
 const readline = require('readline');
 const {google} = require('googleapis');
-const GOOGLE_CALENDAR_ID = "salas.biblioteca@uneatlantico.es";
+const GOOGLE_CALENDAR_ID = "c_c92epc3f1rehv6u9bo5vivget4@group.calendar.google.com";
 const path = require('path');
 
 // If modifying these scopes, delete token.json.
@@ -155,11 +155,12 @@ app.get('/compare_email/:email', (req, res)=>{
 				res.status(200).send({
                     mensaje: "No existe una cuenta con ese correo"
 				});
-                // res.redirect('/signup');
 			}
 		});
 	}
 })
+
+
 
 app.post('/create_usr', (req, res)=>{
 	if(req !=  null){
@@ -217,8 +218,9 @@ app.post('/create_usr', (req, res)=>{
 	}
 });
 
-app.post('/aceptar_reserva', rutasProtegidas,  async (req, res) => {
+app.post('/aceptar_reserva', rutasProtegidas,  async (req, res, next) => {
 	if (req !== null) {
+
 		let data = req.body.reserva;
 	    let dateS = data.start_time;
 	    let dateE = data.end_time;
@@ -244,23 +246,19 @@ app.post('/aceptar_reserva', rutasProtegidas,  async (req, res) => {
 		console.log("start_time", start_time);
 		console.log("end_time", end_time);
 
-		start_time.setHours(start_time.getHours()-2);
-		end_time.setHours(end_time.getHours()-2);
+		start_time.setHours(start_time.getHours()-1);
+		end_time.setHours(end_time.getHours()-1);
 
 		console.log("start_time", start_time);
 		console.log("end_time", end_time);
 
-
 		var today = new Date();
 		var start = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()+" "+"00:00:00";
 		var end = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()+" "+"23:59:59";
-		// var date_reserva = 
+		
 		console.log(start);
 		console.log(end);
 		
-		// console.log('start_time'+start_time);
-		// console.log('end_time'+end_time);
-
 		// console.log(new Date (start_time).toLocaleString());
 		// console.log(new Date (end_time).toLocaleString());
 		//SELECT * FROM `mrbs_entry` WHERE description="martha.marquez@alumnos.uneatlantico.es" AND timestamp>="2020-05-25 00:00:00" AND timestamp<="2020-05-25 23:59:59"
@@ -271,16 +269,6 @@ app.post('/aceptar_reserva', rutasProtegidas,  async (req, res) => {
 
 		let demo = mysqlConnection.query('SELECT * FROM mrbs_entry WHERE room_id =' +elementoID +' AND start_time <='+elementoS +' AND end_time >='+elementoE, (err, rows)=>{
 			if(rows[0]){
-
-				// mysqlConnection.query(compare_dates, function (err, result, fields) {
-				// 	if (err) throw err;
-				// 	if(result[0].cant > 0){
-				// 		console.log("NO se puede realizar la reserva por falta de disponibilidad");
-				// 		//alert("NO se puede realizar otra reserva");
-				// 		// message= "Ya se ha realizado una reserva diaria."
-						
-				// 	}
-				// });
 
 				console.log("NO se puede realizar la reserva por falta de disponibilidad");
 
@@ -293,8 +281,7 @@ app.post('/aceptar_reserva', rutasProtegidas,  async (req, res) => {
 					if (err) throw err;
 					if(result[0].cant > 0){
 						console.log("NO se puede realizar otra reserva");
-						//alert("NO se puede realizar otra reserva");
-						// message= "Ya se ha realizado una reserva diaria."
+						
 						res.status(200).send({
 							mensaje: "Ya se ha realizado una reserva diaria."
 						});
@@ -304,7 +291,7 @@ app.post('/aceptar_reserva', rutasProtegidas,  async (req, res) => {
 						
 						let _id;
 						(async ()=> {
-							mysqlConnection.query(query, [dateS, dateE, elementoID, data.create_by, data.name, data.description], (err) => {
+							mysqlConnection.query(query, [start_time, end_time, elementoID, data.create_by, data.name, data.description], (err) => {
 								if(!err){
 									mysqlConnection.query(query_id, function (err, result, fields) {
 										if (err) throw err;
@@ -318,12 +305,8 @@ app.post('/aceptar_reserva', rutasProtegidas,  async (req, res) => {
 										// console.log("Id Length: ", _id.length);
 				
 										let evt_id
-										evt_id = _id+"0000";
-										// if(_id.length <= 4){
-										// 	evt_id = _id+"0000";
-										// }else{
-										// 	evt_id=_id;
-										// }
+										evt_id = "7s7fg4g8e8f9g"+_id+"0000";
+
 										Event(start_time, end_time, elementoID, data.name, data.description, evt_id);
 										res.status(200).send({
 											mensaje: "Reserva creada con éxito. ",
@@ -397,7 +380,7 @@ app.delete('/eliminar_reserva/:_id/:description', (req, res) => {// /:_room_id
 		// console.log("Id Length: ", _id.length);
 		
 		let evt_id
-		evt_id = _id+"0000";
+		evt_id = "7s7fg4g8e8f9g"+_id+"0000";
 		// if(_id.length <= 4){
 		// 	evt_id = _id+"0000";
 		// }else{
@@ -687,7 +670,7 @@ function deleteEvent(eventId) {
 	function listEvents(auth) {
 		const calendar = google.calendar({version: 'v3', auth});
 		calendar.events.list({
-			calendarId: 'primary',
+			calendarId: 'c_c92epc3f1rehv6u9bo5vivget4@group.calendar.google.com',
 			timeMin: (new Date()).toISOString(),
 			maxResults: 10,
 			singleEvents: true,

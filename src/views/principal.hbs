@@ -125,8 +125,6 @@
                 </div>
                 
                 <div class="card-body text-center">
-                  <!-- <p class="card-text text-justify">eifdkjsmc njhbdyufgwajs</p>
-                  <a href="" class="btn btn-success">LOL</a> -->
                 </div>
                 {{!-- <button onclick="saveTokenForm()">holaaaaaaaaa</button> --}}
               </div>
@@ -311,12 +309,14 @@
     })
   }
 
+
   $(document).ready(function(){
     if((sessionStorage.getItem('myUserEntity')||(sessionStorage.getItem('token'))) == null){ // (sessionStorage.getItem('myUserEntity')||(sessionStorage.getItem('token')))
       //Redirect to login page, no user entity available in sessionStorage
       window.location.href='/';
     }
   }); 
+  
   function myFunction() {
     var x = document.getElementById("myTopnav");
     if (x.className === "topnav") {

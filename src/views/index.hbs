@@ -27,6 +27,7 @@
                     </div>
             
                     <div class="g-signin2 btn center px-3 py-2" data-onsuccess="onSignIn"></div>
+                    {{!-- <a href="/auth/google" class="btn btn-light">Iniciar Sesión</a> --}}
                     
                     <hr>
             
@@ -134,8 +135,9 @@
         }).then((data) => {
             if(data.mensaje == "Ya existe una cuenta con ese correo"){
                 window.location.href = '/principal';
-            }else if(data.mensaje == "No existe una cuenta con ese correo"){
-                window.location.href = 'auth/signup';
+            }
+            else if(data.mensaje == "No existe una cuenta con ese correo"){
+                window.location.href = '/signup';
             }
 
         console.log("data index ",data.mensaje);

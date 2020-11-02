@@ -161,28 +161,30 @@ function toHour(cell, room){
         console.log("Horaaa: ", dateCell);
         // dateCell = cell.value +"_Room_"+room;
         // console.log("DateCell: "+dateCell);
-        clearTimeTable();
+        // clearTimeTable();
 
-        onSignIn(googleUser);
+        // onSignIn(googleUser);
 
-        requestData(dateCell, dateCellEnd, room, asunto, createBy, descripcion);
-
+        
         let reserva = {
-            "reserva":{
-              "start_time": dateCell,
-              "end_time": dateCellEnd,
-              "room_id": parseInt(room),
-              "create_by": "Martha",
-              "name": "Asunto",
-              "description": "Descripcion"
-            }
+          "reserva":{
+            "start_time": dateCell,
+            "end_time": dateCellEnd,
+            "room_id": parseInt(room),
+            "create_by": "Martha",
+            "name": "Asunto",
+            "description": "Descripcion"
+          }
         }
         console.log("Su reserva sería: ", reserva);
+        requestData(dateCell, dateCellEnd, room, asunto, createBy, descripcion);
         timeTable(dateCell);
         clearTimeTable();
 
     });
 }
+
+
 
 function timeTable(buttonDate, month, date, year){
 
@@ -264,12 +266,11 @@ function Disponibilidad(reserva, json){
     }
     return json;  //Return update values.
 }
-
 function displayDisponibilidad(disponibilidad, room){
-    // let cell;
+    let cell;
     for(hora in disponibilidad){
         // let cell = document.createElement("td");
-        let cell = document.getElementById(room+"_"+hora);
+        cell = document.getElementById(room+"_"+hora);
         let disponible;
             // let text = document.createTextNode('');
             // console.log(cell.value);
@@ -280,7 +281,7 @@ function displayDisponibilidad(disponibilidad, room){
                 // cell.style.cursor="pointer";
                 // cell.setAttribute("class", "disponible");
                 // toHour(cell, room);
-                cell.innerHTML = disponible;
+                // cell.innerHTML = disponible;
             }
             else{
                 disponible = "Ocupado";
@@ -362,11 +363,11 @@ function requestData(fecha1, fecha2, room, asunto, createBy, descripcion){
     const myToken = sessionStorage.getItem("token");
     console.log("my token GG ", myToken);
     
-    fecha1.setHours(fecha1.getHours() + 2);
+    fecha1.setHours(fecha1.getHours() + 1);
     let minutos = new Date(fecha1);
     let min = minutos.getMinutes();
     console.log("Fecha 1: ", fecha1);
-    fecha2.setHours(fecha2.getHours() + 2);
+    fecha2.setHours(fecha2.getHours() + 1);
     var mailformat = /^\w+([\.-]?\w+)*@alumnos.uneatlantico.es/;
     var mailformat2 = /^\w+([\.-]?\w+)*@uneatlantico.es/;
 
@@ -442,7 +443,7 @@ function requestData(fecha1, fecha2, room, asunto, createBy, descripcion){
             console.log("Id: ",id_reserva);
             sessionStorage.setItem("id_reserva",id_reserva);
             // this.signOut();
-            window.location.href = '/ReservaExitosa';
+            // window.location.href = '/ReservaExitosa';
           }
         })
         .catch(function(err) {

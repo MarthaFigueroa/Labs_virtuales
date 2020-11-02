@@ -124,8 +124,8 @@ const app = new Vue({
             .then(response => {
                 return response.json();
               }).then((data) => {
-              window.location.href = '/principal.html';
-              console.log("data ",data);
+              window.location.href = '/principal';
+              // console.log("data ",data);
             })
             .catch(function(err) {
               console.error(err);
@@ -495,7 +495,7 @@ const app = new Vue({
 
         console.log("id: ",id);
         console.log("usr: ",usr);
-        let url2 = `http://localhost:3000/eliminar_reserva/${id}/${usr}`;// 
+        let url2 = `http://localhost:3000/links/eliminar_reserva/${id}/${usr}`;// 
 
         this.preventDef(e);
         fetch(url2,{
