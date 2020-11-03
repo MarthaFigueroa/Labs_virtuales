@@ -281,7 +281,7 @@
     // console.log(sessionStorage.getItem('token'));
   }
 
-  function infoUsr(correo){
+  $(document).ready(function infoUsr(correo){
 
     var url = `http://localhost:3000/links/dataUsr/${correo}`;
 
@@ -307,16 +307,16 @@
     .catch(function(err) {
       console.error(err);
     })
-  }
+  });
 
-
+/*
   $(document).ready(function(){
     if((sessionStorage.getItem('myUserEntity')||(sessionStorage.getItem('token'))) == null){ // (sessionStorage.getItem('myUserEntity')||(sessionStorage.getItem('token')))
       //Redirect to login page, no user entity available in sessionStorage
       window.location.href='/';
     }
   }); 
-  
+  */
   function myFunction() {
     var x = document.getElementById("myTopnav");
     if (x.className === "topnav") {

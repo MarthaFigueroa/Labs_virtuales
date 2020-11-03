@@ -6,6 +6,7 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session');
 const passport = require('passport');
+const mysqlConnection = require('./database');
 const cookieSession = require('cookie-session');
 require('../src/lib/passport');
 const { database } = require('./keys');
@@ -78,7 +79,31 @@ app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'em
   
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/failed' }),
   function(req, res) {
-    res.redirect('/principal');
+    
+    const email = req.user.emails[0].value;
+
+    // console.log("Email jeje: ", email);
+    const usuario = `SELECT COUNT(Email) as cant FROM users WHERE Email='${email}'`;
+
+		mysqlConnection.query(usuario, function (err, result, fields) {
+			if (err) throw err;
+			if(result[0].cant > 0){
+				//alert("NO se puede realizar otra reserva");
+                // message= "Ya se ha realizado una reserva diaria."
+				// res.status(200).send({
+                //     mensaje: "Ya existe una cuenta con ese correo",
+                //     email: email
+				// });
+                res.redirect('/principal');
+			} else{  
+                // mensaje='No existe una cuenta con ese correo';
+				// res.status(200).send({
+                //     mensaje: "No existe una cuenta con ese correo",
+                //     email: email
+                // });
+                res.redirect(`/signup?valid=${email}`);
+			}
+		});
   }
 );
 

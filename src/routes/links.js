@@ -160,8 +160,6 @@ app.get('/compare_email/:email', (req, res)=>{
 	}
 })
 
-
-
 app.post('/create_usr', (req, res)=>{
 	if(req !=  null){
 		let data = req.body.usr;
@@ -340,6 +338,9 @@ app.get('/:room_id/:dateS/:dateE', rutasProtegidas, (req, res) => {
 	console.log(new Date (end_time*1000).toLocaleString());
 	console.log("--------");  
 
+
+	// console.log("User: ", req.user.emails[0].value);
+
 	sql=`SELECT id, start_time, end_time, room_id FROM mrbs_entry WHERE room_id = ${room_id} AND (start_time BETWEEN ${start_time} AND ${end_time}) AND (end_time BETWEEN ${start_time} AND ${end_time})`;
 	// sql_id = sql=`SELECT id FROM mrbs_entry WHERE room_id = ${room_id} AND (start_time BETWEEN ${start_time} AND ${end_time}) AND (end_time BETWEEN ${start_time} AND ${end_time})`;00000
 
@@ -354,10 +355,8 @@ app.get('/:room_id/:dateS/:dateE', rutasProtegidas, (req, res) => {
 	      for (var i in inf){
 	        if(inf.hasOwnProperty(i)){
 	          const reserva={
-	           start_time:new Date((inf[i].start_time*1000)+3600000*1),//*2
+	           	start_time:new Date((inf[i].start_time*1000)+3600000*1),//*2
 	            end_time:new Date((inf[i].end_time*1000)+3600000*1), //*2
-	            // start_time:new Date((inf[i].start_time*1000)+3600000),
-	            // end_time:new Date((inf[i].end_time*1000)+3600000),
 				room_id:inf[i].room_id
 	          }
 	          response.disponibilidad.push(reserva);
@@ -406,6 +405,13 @@ app.delete('/eliminar_reserva/:_id/:description', (req, res) => {// /:_room_id
 			}
 		});	
 	  }
+});
+
+app.get('/getUsr', (req, res)=>{
+	const email = req.user.emails[0].value;
+	res.status(200).send({
+		email: email
+	});
 });
 
 //Send Mail Function
@@ -457,7 +463,7 @@ let sendEmail = function(id, mail, day, hour){
 		}
 	});
 
-};
+}
 
 function Event(start_time, end_time, room_id, subject, email, id){
 

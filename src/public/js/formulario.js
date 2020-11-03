@@ -62,7 +62,7 @@ const app = new Vue({
             return response.json();
         }).then((data) => {
             if(data.mensaje == "Ya existe una cuenta con ese correo"){
-                window.location.href = '/principal.html';
+                window.location.href = '/principal';
             }else{
                 window.location.href = '/formulario2.html';
             }

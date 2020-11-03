@@ -4,6 +4,9 @@ const { isLoggedIn, isNotLoggedIn } = require('../lib/auth');
 const router = express.Router();
 
 router.get('/signup', (req, res)=>{
+    // const email = req.user.emails[0].value;
+    // console.log("Correo: ", req.query.valid);
+    // var json_code = {email: req.query.valid};
     res.render('auth/signup');
 });
 
@@ -11,12 +14,12 @@ router.get('/formulario', (req, res)=>{
     res.render('formulario');
 });
 
-router.post('/signup', isNotLoggedIn, passport.authenticate('local.signup', {
-        successRedirect: '/principal',//Donde redirecciona en caso exitoso
-        failureRedirect: '/signup', //Donde redireccionará en caso de fracaso
-        failureFlash: true  //Permite a passport recibir mensajes en caso falle
-    })   
-);
+// router.post('/signup', isNotLoggedIn, passport.authenticate('local.signup', {
+//         successRedirect: '/principal',//Donde redirecciona en caso exitoso
+//         failureRedirect: '/signup', //Donde redireccionará en caso de fracaso
+//         failureFlash: true  //Permite a passport recibir mensajes en caso falle
+//     })   
+// );
 
 router.get('/', (req, res)=>{
     res.render('index');
