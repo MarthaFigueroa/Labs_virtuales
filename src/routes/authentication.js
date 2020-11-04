@@ -3,6 +3,10 @@ const passport = require('passport');
 const { isLoggedIn, isNotLoggedIn } = require('../lib/auth');
 const router = express.Router();
 
+const checkUserLoggedIn = (req, res, next) => {
+	req.user ? next(): res.redirect('/');
+}
+
 router.get('/signup', (req, res)=>{
     // const email = req.user.emails[0].value;
     // console.log("Correo: ", req.query.valid);
@@ -10,7 +14,7 @@ router.get('/signup', (req, res)=>{
     res.render('auth/signup');
 });
 
-router.get('/formulario', (req, res)=>{
+router.get('/formulario', checkUserLoggedIn, (req, res)=>{
     res.render('formulario');
 });
 
@@ -25,7 +29,7 @@ router.get('/', (req, res)=>{
     res.render('index');
 });
 
-router.get('/principal', (req, res)=>{
+router.get('/principal', checkUserLoggedIn, (req, res)=>{
     res.render('principal');
 });
 
@@ -33,11 +37,11 @@ router.get('/add', (req, res)=>{
     res.render('links/add');
 });
 
-router.get('/formulario_reserva', (req, res)=>{
+router.get('/formulario_reserva', checkUserLoggedIn, (req, res)=>{
     res.render('links/formulario_reserva');
 });
 
-router.get('/ReservaExitosa', (req, res)=>{
+router.get('/ReservaExitosa', checkUserLoggedIn, (req, res)=>{
     res.render('links/ReservaExitosa');
 });
 
@@ -45,7 +49,7 @@ router.get('/ReservaEliminada', (req, res)=>{
     res.render('links/ReservaEliminada');
 });
 
-router.get('/disponibilidad_reserva', (req, res)=>{
+router.get('/disponibilidad_reserva', checkUserLoggedIn, (req, res)=>{
     res.render('links/disponibilidad_reserva');
 });
 

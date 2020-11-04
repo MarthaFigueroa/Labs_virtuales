@@ -41,8 +41,8 @@
                   <p class="dropdown-item" readonly><i class="fa fa-user mr-2"></i><label id="usuario" style="color: black; display: inline;"></label> </p>
                   <p class="dropdown-item" readonly><i class="fa fa-envelope mr-2"></i><label id="email" style="color: black; display: inline;"></label> </p>
                   <p class="dropdown-item" readonly><i class="fa fa-briefcase mr-2"></i><label id="grado" style="color: black; display: inline;"></label> </p>
-                  <p class="dropdown-item" readonly><i class="fa fa-bookmark mr-2"></i><label id="carne" style="color: black; display: inline;"></label> </p>
-                  <a class="dropdown-item" href="#" id="logout" onclick="signOut()">
+                  {{!-- <p class="dropdown-item" readonly><i class="fa fa-bookmark mr-2"></i><label id="carne" style="color: black; display: inline;"></label> </p> --}}
+                  <a class="dropdown-item" href="/logout" id="logout"> {{!-- onclick="signOut()" --}}
                     <i class="fa fa-sign-out mr-2" aria-hidden="true"></i>
                     Finalizar Sesión</a>
                   </div>
@@ -180,30 +180,34 @@
 //   console.log("Width: " + w + " Height: " + h);
 // }
 
-  function form_render(){
-    var url = "http://localhost:3000/links/formulario";
-    
-    fetch(url, {
-    method: "GET",
-    headers: {
-        
-        "Content-Type": "application/json"
-        // "access-token": token
-    },
-    mode: 'cors',
-    cache: 'no-cache'  
-    })
-    .then(response => {
-        return response.json();
-    })
-    .then((data) => {
-        //this.requestData(token);
-    })
-    .catch(function(err) {
-        console.error(err);
-    });
-  }
 
+    $(document).ready(function(){
+    let url2 = `http://localhost:3000/links/getUsr`;// 
+
+        fetch(url2,{
+          method: 'GET',            
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-type': 'application/json'
+          },
+          mode: 'cors',
+          cache: 'no-cache'
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then((data) => {
+            var data = data;
+            //document.getElementById('correo').value = data.email;
+            console.log(data);
+            infoUsr(data.email);
+        })
+        .catch(function(err) {
+            console.error(err);
+        });
+  }); 
+
+  
   function saveTokenForm(){
 
     var url = "http://localhost:3000/links/autenticar";
@@ -281,7 +285,7 @@
     // console.log(sessionStorage.getItem('token'));
   }
 
-  $(document).ready(function infoUsr(correo){
+  function infoUsr(correo){
 
     var url = `http://localhost:3000/links/dataUsr/${correo}`;
 
@@ -302,12 +306,12 @@
       document.getElementById('email').innerHTML = data.info[0].Email;
       document.getElementById('usuario').innerHTML = data.info[0].Nombre;
       document.getElementById('grado').innerHTML = data.info[0].grado_id;
-      document.getElementById('carne').innerHTML = data.info[0].Numero_carne;
+      //document.getElementById('carne').innerHTML = data.info[0].Numero_carne;
     })
     .catch(function(err) {
       console.error(err);
     })
-  });
+  }
 
 /*
   $(document).ready(function(){

@@ -71,7 +71,7 @@ app.use(passport.session());
 // }));
 
 const checkUserLoggedIn = (req, res, next) => {
-	req.user ? next(): res.sendStatus(401);
+	req.user ? next(): res.redirect('/');
 }
 
 // Auth Routes
@@ -117,6 +117,13 @@ app.get('/principal', checkUserLoggedIn, (req, res) => {
 app.get('/prueba', (req, res)=>{
     res.send(`<h1>Still ${req.user.displayName}'s Profile Page xd</h1>`)
 });
+
+//Logout
+app.get('/logout', (req, res) => {
+    // req.session = null;
+    req.logout();
+    res.redirect('/');
+})
 
 //Starting Server
 app.listen(app.get('port'), () => {

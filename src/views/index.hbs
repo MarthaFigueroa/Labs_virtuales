@@ -15,7 +15,35 @@
   <link rel="icon" href="data:,">
   <meta name="google-signin-client_id" content="824727614201-aqs7qs34hsspjj65abvvbj3luehgj1rc.apps.googleusercontent.com">
  </head>
- 
+
+ <style type="text/css">
+    #customBtn {
+      display: inline-block;
+      border-radius: 5px;
+      border: thin solid rgba(136, 136, 136, 0.452);
+      box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.527);
+      white-space: nowrap;
+    }
+    
+    span.icon {
+      background-image: url('img/google_icon.png');
+      background-repeat: no-repeat;
+      background-size: 20px;
+      margin: 5px;
+      display: inline-block;
+      vertical-align: middle;
+      width: 20px;
+      height: 20px;
+    }
+    span.buttonText {
+      display: inline-block;
+      vertical-align: middle;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.651);
+      font-weight: bold;
+    }
+  </style>
+
  <body class="bgForm">
 
     <div id="app">
@@ -26,8 +54,15 @@
                         <img src="./img/UNEAT.png" style="width: 100%; height: auto; " alt="UNIVERSIDAD EUROPEA DEL ATLÁNTICO" class="avatar">
                     </div>
             
-                    <div class="g-signin2 btn center px-3 py-2" data-onsuccess="onSignIn"></div>
-                    <a href="/auth/google" class="btn btn-light">Iniciar Sesión</a>
+                    {{!-- <div class="g-signin2 btn center px-3 py-2" data-onsuccess="onSignIn"></div> --}}
+                    {{!-- <a href="/auth/google" class="btn center px-3 py-2">Iniciar Sesión</a> --}}
+                    <div id="customBtn" class="customGPlusSignIn">
+                        <a href="/auth/google" class="btn center">
+                            <span class="icon"></span>
+                            <span class="buttonText">Iniciar Sesión</span>
+                        </a>
+                    </div>
+
                     
                     <hr>
             

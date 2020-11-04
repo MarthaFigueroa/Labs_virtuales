@@ -124,7 +124,7 @@ app.get('/dataUsr/:email', (req, res)=>{
 					const usuario={
 						Nombre: inf[i].Nombre+" "+inf[i].Apellido,
 						Email: inf[i].Email,
-						grado_id: inf[i].grado_id,//*2
+						grado_id: inf[i].grado_id,
 						Numero_carne:inf[i].Numero_carne
 					}
 					response.info.push(usuario);
@@ -169,50 +169,23 @@ app.post('/create_usr', (req, res)=>{
 		let grado_id = data.grado_id;
 		let correo = data.Email;
 		// const usuario = `SELECT COUNT(Email) as cant FROM users WHERE Email='${email}'`;
-		const query = `INSERT INTO users(Nombre, Apellido, Email, Numero_carne, grado_id, rol)VALUES('${nombre}', '${apellidos}', '${correo}', '${num_carne}', '${grado_id}', 1)`;
+		const query = `INSERT INTO users(Nombre, Apellido, Email, grado_id, rol)VALUES('${nombre}', '${apellidos}', '${correo}', '${grado_id}', 1)`;
 		
-				// mysqlConnection.query(usuario, function (err, result, fields) {
-				// 	if (err) throw err;
-				// 	if(result[0].cant > 0){
-				// 		console.log("NO se puede realizar otra reserva");
-				// 		//alert("NO se puede realizar otra reserva");
-				// 		// message= "Ya se ha realizado una reserva diaria."
-				// 		res.status(200).send({
-				// 			mensaje: "Ya se ha realizado una reserva diaria."
-				// 		});
-				// 	}else{
-						
-					(async ()=> {
-						mysqlConnection.query(query, [nombre, apellidos, correo, num_carne, grado_id, 1], (err) => {
-							if(!err){
-								// console.log(result[0].id);
-								console.log("Nombre: ",nombre);
-								console.log("Apellidos: ",apellidos);
-								
-								res.status(200).send({
-									mensaje: "Usuario creado con éxito. "
-								});
-							} else {
-								console.log(err);
-							}
-						});
-					})()
-					// }
-				// });
-
-
-
-
-		// const query_email = `SELECT Email FROM users WHERE Email='${email}'`;
-		// (async () => {
-		// 	mysqlConnection.query(query_email, [correo], (err) => {
-		// 		if(!err){
-
-		// 		}
-		// 	});
-		// });
-
-		// const query = `INSERT INTO users(Nombre, Apellido, Email, Numero_carne, grado_id, rol)VALUES('${nombre}', '${apellidos}', '${correo}', '${num_carne}', '${grado_id}', 1)`;
+		(async ()=> {
+			mysqlConnection.query(query, [nombre, apellidos, correo, num_carne, grado_id, 1], (err) => {
+				if(!err){
+					// console.log(result[0].id);
+					console.log("Nombre: ",nombre);
+					console.log("Apellidos: ",apellidos);
+					
+					res.status(200).send({
+						mensaje: "Usuario creado con éxito. "
+					});
+				} else {
+					console.log(err);
+				}
+			});
+		})()
 	}
 });
 
@@ -731,6 +704,7 @@ function isLoggedIn(req, res, next) {
 		return res.redirect('/');
 	}
 }
+
 
 //Inicia el servidor 
 // app.listen(app.get('port'), () => {

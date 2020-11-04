@@ -82,7 +82,6 @@ const app = new Vue({
         let nombre = document.getElementById('nombre').value;
         let apellidos = document.getElementById('apellidos').value;
         let correo = document.getElementById('correo').value;
-        let carne = document.getElementById('carne').value;
         let grado = document.getElementById('grado');
         let gradovalue = grado[grado.selectedIndex].value;
         var mailformat = /^\w+([\.-]?\w+)*@alumnos.uneatlantico.es/;
@@ -99,7 +98,6 @@ const app = new Vue({
               "Nombre": nombre,
               "Apellido": apellidos,
               "Email": correo,
-              "Numero_carne": carne,
               "grado_id": gradovalue
             }
           }
