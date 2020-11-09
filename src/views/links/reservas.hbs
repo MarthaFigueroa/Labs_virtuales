@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>   
+</head>
+<body>
+
+    <div class="wrapper wrapper--w780 my-4">
+        <a href="/principal" class="mb-3" style="float: left;">Regresar</a> 
+        <table class="table">
+            <thead class="bg-primary" style="color: white;">
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Asignatura</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Acceder</th>
+                <th scope="col">Cancelar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each reservas}}
+                <tr>
+                    <th scope="row">{{ this.id }}</th>
+                    <td>{{ this.room_id }}</td>
+                    <td>{{ this.date }}</td>
+                    <td>{{ this.time }}</td>
+                    <td>{{ this.user }}</td>
+                </tr>
+        
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -61,7 +61,7 @@ body{
     text-align: center;
 }
 
-.btn-login::after{
+/* .btn-login::after{
     content: "";
     margin-left: 5px;
     margin-top: 3px;
@@ -71,21 +71,46 @@ body{
     position: absolute;
     display: inline-block;
     background-size: 20px 20px;
+} */
+
+#customBtn {
+    display: inline-block;
+    border-radius: 5px;
+    border: thin solid rgba(136, 136, 136, 0.452);
+    box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.527);
+    white-space: nowrap;
+}
+
+span.icon {
+    background-image: url('../img/google_icon.png');
+    background-repeat: no-repeat;
+    background-size: 20px;
+    margin: 5px;
+    display: inline-block;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+}
+span.buttonText {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.651);
+    font-weight: bold;
 }
 
 h1{
-    /* color: white; */
     margin: 5%;
 }
 
 p{
-    /* color: white; */
     margin: 0 2%;
 }
 
 hr{
     background-color: white;
     margin: 5%;
+    height: 25px;
 }
 
 .btn-login:hover{

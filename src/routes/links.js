@@ -20,11 +20,7 @@ const SCOPES = ['https://www.googleapis.com/auth/calendar'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
-
 const TOKEN_PATH = 'token.json';
-
-
-// Load client secrets from a local file.
 
 //revisar si viene la header “access-token” en las cabeceras y de ahí verifica la JWT contra el servicio
 const rutasProtegidas = express.Router(); 
@@ -235,7 +231,8 @@ app.post('/aceptar_reserva', rutasProtegidas,  async (req, res, next) => {
 		// console.log(new Date (end_time).toLocaleString());
 		//SELECT * FROM `mrbs_entry` WHERE description="martha.marquez@alumnos.uneatlantico.es" AND timestamp>="2020-05-25 00:00:00" AND timestamp<="2020-05-25 23:59:59"
 		const reserva1 = `SELECT COUNT(*) as cant FROM mrbs_entry WHERE description='${data.description}' AND timestamp>="${start}" AND timestamp<="${end}"`;
-		const compare_dates = 'SELECT COUNT(*) as disponibilidad FROM mrbs_entry WHERE room_id =' +elementoID +' AND start_time BETWEEN '+elementoS+' AND '+elementoE;
+		// const compare_dates = 'SELECT COUNT(*) as disponibilidad FROM mrbs_entry WHERE room_id =' +elementoID +' AND start_time BETWEEN '+elementoS+' AND '+elementoE;
+		const reserva_usr = `INSERT INTO reservas(room_id, date, time, user)VALUES('${elementoID}', '${date_reserva[0]}', '${hora_reserva}', '${data.description}')`;
 		// SELECT COUNT(*) FROM mrbs_entry WHERE room_id =80 AND start_time BETWEEN '1599471000' AND '1599472800'
 		// SELECT * FROM mrbs_entry WHERE start_time BETWEEN '1599469200' AND '1599476400' 
 
@@ -265,28 +262,33 @@ app.post('/aceptar_reserva', rutasProtegidas,  async (req, res, next) => {
 						(async ()=> {
 							mysqlConnection.query(query, [start_time, end_time, elementoID, data.create_by, data.name, data.description], (err) => {
 								if(!err){
-									mysqlConnection.query(query_id, function (err, result, fields) {
-										if (err) throw err;
-										
-										// console.log(result[0].id);
-										_id = result[0].id;
-										console.log("Id: ",_id);
-										// console.log("Start: ",dateS," End:", dateE);
-										
-										sendEmail(_id, data.description, date_reserva[0], hora_reserva); //, data.description
-										// console.log("Id Length: ", _id.length);
-				
-										let evt_id
-										evt_id = "7s7fg4g8e8f9g"+_id+"0000";
+									mysqlConnection.query(reserva_usr, [elementoID, date_reserva[0], hora_reserva, data.description], (err)=> {
+										if(!err){
+											mysqlConnection.query(query_id, function (err, result, fields) {
+												if (err) throw err;
+												
+												// console.log(result[0].id);
+												_id = result[0].id;
+												console.log("Id: ",_id);
+												// console.log("Start: ",dateS," End:", dateE);
+												
+												sendEmail(_id, data.description, date_reserva[0], hora_reserva); //, data.description
+												// console.log("Id Length: ", _id.length);
+						
+												let evt_id
+												evt_id = "7s7fg4g8e8f9g"+_id+"0000";
 
-										Event(start_time, end_time, elementoID, data.name, data.description, evt_id);
-										res.status(200).send({
-											mensaje: "Reserva creada con éxito. ",
-											id: _id,
-											description: data.description
-										});
-										
+												Event(start_time, end_time, elementoID, data.name, data.description, evt_id);
+												res.status(200).send({
+													mensaje: "Reserva creada con éxito. ",
+													id: _id,
+													description: data.description
+												});
+											
+											});
+										}	
 									});
+									
 								} else {
 									console.log(err);
 								}
@@ -695,16 +697,6 @@ app.use(function(req, res, next) {
  };
  res.status(404).send(respuesta);
 });
-
-function isLoggedIn(req, res, next) {
-	//Método retorna true si el usr o su sesión existe
-	//Si existe continua con el código, sino redirecciona al signin
-	if(req.isAuthenticated()){
-		return next();
-	}else{
-		return res.redirect('/');
-	}
-}
 
 
 //Inicia el servidor 

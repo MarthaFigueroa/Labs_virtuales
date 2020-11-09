@@ -2,15 +2,13 @@ const express = require('express');
 const passport = require('passport');
 const { isLoggedIn, isNotLoggedIn } = require('../lib/auth');
 const router = express.Router();
+const mysqlConnection = require('../database');
 
 const checkUserLoggedIn = (req, res, next) => {
 	req.user ? next(): res.redirect('/');
 }
 
 router.get('/signup', (req, res)=>{
-    // const email = req.user.emails[0].value;
-    // console.log("Correo: ", req.query.valid);
-    // var json_code = {email: req.query.valid};
     res.render('auth/signup');
 });
 
@@ -25,12 +23,40 @@ router.get('/formulario', checkUserLoggedIn, (req, res)=>{
 //     })   
 // );
 
+router.get('/list', async(req, res)=>{
+    const links = await mysqlConnection.query('SELECT * FROM links');
+    console.log(links);
+    // res.send('Listas irán aquí');
+    res.render('links/list', {links});
+});
+
+router.get('/reservas', async (req, res)=>{
+    const email = req.user.emails[0].value;
+    const reservas = await mysqlConnection.query(`SELECT * FROM reservas WHERE user='${email}'`);
+    console.log(reservas[0].date);
+    // let newDate = reservas[0].date;
+    // let newD = newDate.split('T');
+    // reservas[0].date = newD[0];
+    res.render('links/reservas', { reservas });
+});
+
+router.get('/list', (req, res)=>{
+    res.render('links/list');
+});
+
+router.get('/add', (req, res)=>{
+    res.render('links/add');
+});
+
 router.get('/', (req, res)=>{
     res.render('index');
 });
 
-router.get('/principal', checkUserLoggedIn, (req, res)=>{
-    res.render('principal');
+router.get('/principal', checkUserLoggedIn, async(req, res)=>{
+    const email = req.user.emails[0].value;
+    const user = await mysqlConnection.query(`SELECT * FROM users WHERE Email='${email}'`);
+    console.log(user);
+    res.render('principal', { user });
 });
 
 router.get('/add', (req, res)=>{
@@ -53,12 +79,12 @@ router.get('/disponibilidad_reserva', checkUserLoggedIn, (req, res)=>{
     res.render('links/disponibilidad_reserva');
 });
 
-router.post('/', isNotLoggedIn, (req, res, next)=>{
-    // passport.authenticate('local.signin', {
-    //     successRedirect: '/principal',
-    //     failureRedirect: '/signup',
-    //     failureFlash: true
-    // })(req, res, next);
-});
+// router.post('/', isNotLoggedIn, (req, res, next)=>{
+//     // passport.authenticate('local.signin', {
+//     //     successRedirect: '/principal',
+//     //     failureRedirect: '/signup',
+//     //     failureFlash: true
+//     // })(req, res, next);
+// });
 
 module.exports = router;

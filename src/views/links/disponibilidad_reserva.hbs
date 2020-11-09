@@ -5,25 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Disponibilidad</title>
-    <meta name="google-signin-client_id" content="824727614201-aqs7qs34hsspjj65abvvbj3luehgj1rc.apps.googleusercontent.com">
+    {{!-- <meta name="google-signin-client_id" content="824727614201-aqs7qs34hsspjj65abvvbj3luehgj1rc.apps.googleusercontent.com"> --}}
     <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
-    <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+    {{!-- <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script> --}}
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="../../css/formulario.css">
 </head>
 <body class="bgForm" style="overflow: hidden;">
-    <div id="app" class="container page-wrapper bg-gra-01 p-t-180 p-b-100 font-poppins">
+    <div id="app" class="container page-wrapper bg-gra-01 p-t-180 p-b-100 font-poppins mt-5">
         <div :class="['px-5', 'pt-4', 'bg-light','my-4', 'form']" class="wrapper wrapper--w780 card">
           <div class="container text-center" id="alertCont" style="border: none !important; box-shadow: none !important;"></div>  
           <div class="font-poppins">
             <div>
-                <a href="/principal" style="float: left;">Regresar</a> 
                 <div class="g-signin2 btn center px-3 py-2" data-onsuccess="onSignIn" hidden></div>
               <div class="card-3">
                 <div class="card-body">
                   
                   <div class="col-md-12 mt-4 pb-3 mx-auto text-center">
+                    <a href="/principal" style="float: left;">Regresar</a> 
                     
                     <div class="imgcontainer">
                       <img src="./img/UNEAT.png" style="width: 300px; height: 95px; " alt="UNIVERSIDAD EUROPEA DEL ATLÁNTICO" class="avatar">

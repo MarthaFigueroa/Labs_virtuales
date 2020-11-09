@@ -150,13 +150,15 @@ function createTimeColumn(){
     }
 }
 
-function toHour(cell, room){
-    cell.addEventListener("click", function(event){   
+async function toHour(cell, room){
+    cell.addEventListener("click", async function(event){   
         event.preventDefault();
         let dateCell = new Date(cell.value);  
-        let usuario_data = infoUsr();
-        console.log("usuarioooo ",usuario_data);
-        let asunto = "Asunto", createBy="Martha", descripcion="martha.marquez@alumnos.uneatlantico.es"
+        let usuario_data;
+        // await infoUsr();
+        usuario_data = await infoUsr();
+        console.log("usuarioooo ",usuario_data.Email);
+        let asunto = "Reserva Sala Biblioteca", createBy=usuario_data.Nombre, descripcion=usuario_data.Email;
         let dateCellEnd = new Date(dateCell);
         dateCellEnd.setHours(dateCellEnd.getHours(), dateCellEnd.getMinutes() +30);
         console.log(dateCell, dateCellEnd);
@@ -167,8 +169,8 @@ function toHour(cell, room){
             "start_time": dateCell,
             "end_time": dateCellEnd,
             "room_id": parseInt(room),
-            "create_by": "Martha",
-            "name": "Asunto",
+            "create_by": createBy,
+            "name": asunto,
             "description": descripcion
           }
         }
@@ -179,8 +181,6 @@ function toHour(cell, room){
 
     });
 }
-
-
 
 function timeTable(buttonDate, month, date, year){
 
@@ -474,34 +474,34 @@ function requestData(reserva){
     }
   }
 
-  function getUsr(){
-    let url2 = `http://localhost:3000/links/getUsr`;// 
+  // function getUsr(){
+  //   let url2 = `http://localhost:3000/links/getUsr`;// 
 
-        fetch(url2,{
-          method: 'GET',            
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Content-type': 'application/json'
-          },
-          mode: 'cors',
-          cache: 'no-cache'
-        })
-        .then(response => {
-            return response.json();
-        })
-        .then((data) => {
-            var data = data;
-            // document.getElementById('correo').value = data.email;
-            infoUsr(data.email);
-            // console.log(data);
-            return data.email;
-        })
-        .catch(function(err) {
-            console.error(err);
-        });
-  }
+  //       fetch(url2,{
+  //         method: 'GET',            
+  //         headers: {
+  //           'Access-Control-Allow-Origin': '*',
+  //           'Content-type': 'application/json'
+  //         },
+  //         mode: 'cors',
+  //         cache: 'no-cache'
+  //       })
+  //       .then(response => {
+  //           return response.json();
+  //       })
+  //       .then((data) => {
+  //           var data = data;
+  //           // document.getElementById('correo').value = data.email;
+  //           infoUsr(data.email);
+  //           // console.log(data);
+  //           return data.email;
+  //       })
+  //       .catch(function(err) {
+  //           console.error(err);
+  //       });
+  // }
 
-  $(document).ready(getUsr()); 
+  // $(document).ready(getUsr()); 
 
   function infoUsr(){
 
@@ -509,8 +509,7 @@ function requestData(reserva){
 
     // console.log("Correo: ", correo);
     // this.preventDef();
-
-    fetch(url,{
+    return fetch(url,{
     method: 'GET',            
     headers: {
         'Access-Control-Allow-Origin': '*',
@@ -523,14 +522,13 @@ function requestData(reserva){
       return response.json();
     }).then((data) => {
       //document.getElementById('email').innerHTML = data.info[0].Email;
-      console.log(data.info[0]);
+      console.log("Data del usuario: ",data.info[0]);
       // getData(data.info[0].Nombre, data.info[0].Email);
       return data.info[0];
     })
     .catch(function(err) {
       console.error(err);
     })
-
   }
 function getData(name, email){
   let data_usr = {
