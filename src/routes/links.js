@@ -102,9 +102,10 @@ app.post('/autenticar', (req, res) => {
     }
 });
 
-app.get('/dataUsr/:email', (req, res)=>{
+app.get('/dataUsr', (req, res)=>{ ///:email
 	if(req != null){
-		const {email} = req.params;
+		// const {email} = req.params;
+		const email = req.user.emails[0].value;
 
 		const usuario = `SELECT * FROM users WHERE Email='${email}'`;
 

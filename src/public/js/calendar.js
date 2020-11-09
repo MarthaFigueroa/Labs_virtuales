@@ -154,18 +154,14 @@ function toHour(cell, room){
     cell.addEventListener("click", function(event){   
         event.preventDefault();
         let dateCell = new Date(cell.value);  
+        let usuario_data = infoUsr();
+        console.log("usuarioooo ",usuario_data);
         let asunto = "Asunto", createBy="Martha", descripcion="martha.marquez@alumnos.uneatlantico.es"
         let dateCellEnd = new Date(dateCell);
         dateCellEnd.setHours(dateCellEnd.getHours(), dateCellEnd.getMinutes() +30);
         console.log(dateCell, dateCellEnd);
         console.log("Horaaa: ", dateCell);
-        // dateCell = cell.value +"_Room_"+room;
-        // console.log("DateCell: "+dateCell);
-        // clearTimeTable();
 
-        // onSignIn(googleUser);
-
-        
         let reserva = {
           "reserva":{
             "start_time": dateCell,
@@ -173,11 +169,11 @@ function toHour(cell, room){
             "room_id": parseInt(room),
             "create_by": "Martha",
             "name": "Asunto",
-            "description": "Descripcion"
+            "description": descripcion
           }
         }
         console.log("Su reserva sería: ", reserva);
-        requestData(dateCell, dateCellEnd, room, asunto, createBy, descripcion);
+        requestData(reserva); //dateCell, dateCellEnd, room, asunto, createBy, descripcion
         timeTable(dateCell);
         clearTimeTable();
 
@@ -358,11 +354,19 @@ function fetchData(room, startTime, endTime, onData){
     });
 }
 
-function requestData(fecha1, fecha2, room, asunto, createBy, descripcion){
+function requestData(reserva){
+  // fecha1, fecha2, room, asunto, createBy, descripcion
         
     const myToken = sessionStorage.getItem("token");
     console.log("my token GG ", myToken);
     
+    let fecha1 = reserva.reserva.start_time;
+    let fecha2 = reserva.reserva.end_time;
+    let room = reserva.reserva.room_id;
+    let asunto = reserva.reserva.name;
+    let createBy = reserva.reserva.create_by;
+    let descripcion = reserva.reserva.description;
+
     fecha1.setHours(fecha1.getHours() + 1);
     let minutos = new Date(fecha1);
     let min = minutos.getMinutes();
@@ -470,30 +474,40 @@ function requestData(fecha1, fecha2, room, asunto, createBy, descripcion){
     }
   }
 
-  function onSignIn(googleUser) {
-    var profile = googleUser.getBasicProfile();
-    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-    console.log('Name: ' + profile.getName());
-    console.log('Image URL: ' + profile.getImageUrl());
-    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-    let id_token = googleUser.getAuthResponse().id_token;
-    // console.log(id_token);
-    infoUsr(profile.getEmail());
-    //console.log(sessionStorage.getItem('token'));
-}
+  function getUsr(){
+    let url2 = `http://localhost:3000/links/getUsr`;// 
 
-  $(document).ready(function(){
-    if((sessionStorage.getItem('myUserEntity')||(sessionStorage.getItem('token'))) == null){ // (sessionStorage.getItem('myUserEntity')||(sessionStorage.getItem('token')))
-      //Redirect to login page, no user entity available in sessionStorage
-      window.location.href='/principal';
-    }
-  }); 
+        fetch(url2,{
+          method: 'GET',            
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-type': 'application/json'
+          },
+          mode: 'cors',
+          cache: 'no-cache'
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then((data) => {
+            var data = data;
+            // document.getElementById('correo').value = data.email;
+            infoUsr(data.email);
+            // console.log(data);
+            return data.email;
+        })
+        .catch(function(err) {
+            console.error(err);
+        });
+  }
 
-  function infoUsr(correo){
+  $(document).ready(getUsr()); 
 
-    var url = `http://localhost:3000/links/dataUsr/${correo}`;
+  function infoUsr(){
 
-    console.log("Correo: ", correo);
+    var url = `http://localhost:3000/links/dataUsr`; //  /${correo}
+
+    // console.log("Correo: ", correo);
     // this.preventDef();
 
     fetch(url,{
@@ -510,12 +524,22 @@ function requestData(fecha1, fecha2, room, asunto, createBy, descripcion){
     }).then((data) => {
       //document.getElementById('email').innerHTML = data.info[0].Email;
       console.log(data.info[0]);
-      return data;
+      // getData(data.info[0].Nombre, data.info[0].Email);
+      return data.info[0];
     })
     .catch(function(err) {
       console.error(err);
     })
+
   }
+function getData(name, email){
+  let data_usr = {
+    "name": name,
+    "email": email
+  }
+  console.log(data_usr);
+  return data_usr;
+}
 
   function signOut() {
     var auth2 = gapi.auth2.getAuthInstance();
