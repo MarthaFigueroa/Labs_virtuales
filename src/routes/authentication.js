@@ -34,9 +34,6 @@ router.get('/reservas', async (req, res)=>{
     const email = req.user.emails[0].value;
     const reservas = await mysqlConnection.query(`SELECT * FROM reservas WHERE user='${email}'`);
     console.log(reservas[0].date);
-    // let newDate = reservas[0].date;
-    // let newD = newDate.split('T');
-    // reservas[0].date = newD[0];
     res.render('links/reservas', { reservas });
 });
 

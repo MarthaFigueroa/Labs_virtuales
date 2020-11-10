@@ -153,6 +153,7 @@ function createTimeColumn(){
 async function toHour(cell, room){
     cell.addEventListener("click", async function(event){   
         event.preventDefault();
+        clearTimeTable();
         let dateCell = new Date(cell.value);  
         let usuario_data;
         // await infoUsr();

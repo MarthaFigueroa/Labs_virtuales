@@ -19,7 +19,8 @@
 
     <div id="app">
         <div class="container login col-md-3 mx-auto">
-            <div class="card">
+            <div class="">
+                <hr>
                 <div class="card-body">
                     <div class="imgcontainer">
                         <img src="./img/UNEAT.png" style="width: 100%; height: auto; " alt="UNIVERSIDAD EUROPEA DEL ATLÁNTICO" class="avatar">
@@ -27,44 +28,25 @@
             
                     {{!-- <div class="g-signin2 btn center px-3 py-2" data-onsuccess="onSignIn"></div> --}}
                     {{!-- <a href="/auth/google" class="btn center px-3 py-2">Iniciar Sesión</a> --}}
-                    <div id="customBtn" class="customGPlusSignIn btn-login">
-                        <a href="/auth/google" class="btn center">
+                    <a href="/auth/google" id="customBtn" class="btn center customGPlusSignIn btn-login">
+                        {{!-- <div id="customBtn" class="customGPlusSignIn btn-login"> --}}
                             <span class="icon"></span>
                             <span class="buttonText">Iniciar Sesión</span>
-                        </a>
-                    </div>
+                        {{!-- </div> --}}
+                    </a>
 
                     
                     <hr>
             
                     <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sit, optio eius! Nostrum maiores earum maxime.</p>
                 </div>
+                <hr>
             </div>
         </div>
     </div>
  </body>
  <script src="js/formulario.js"></script>
  <script>
-	// gapi.load('auth2', function(){
-	// 	gapi.auth2.init();
-	// });
-
-    // gapi.client.load('plus', 'v1', function() {
-    //     console.log('plus loaded!');
-    //     onSignIn();
-    // });
-
-    //Function to reload a page after loaded
-    // window.onload = function() {
-    //     //considering there aren't any hashes in the urls already
-    //     if(!window.location.hash) {
-    //         //setting window location
-    //         window.location = window.location;
-    //         //using reload() method to reload web page
-    //         window.location.reload();
-    //     }
-    // }
-
     function saveToken(correo){
         console.log("entrando");
         var url = "http://localhost:3000/links/autenticar";
@@ -95,27 +77,6 @@
             console.error(err);
         });
       }
-
-	async function onSignIn(googleUser) {
-		var profile = googleUser.getBasicProfile();
-		console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-		console.log('Name: ' + profile.getName());
-		console.log('Image URL: ' + profile.getImageUrl());
-        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-        let id_token = googleUser.getAuthResponse().id_token;
-        console.log(id_token);
-        
-        var myUserEntity = {};
-        myUserEntity.Id = profile.getId();
-        myUserEntity.Name = profile.getName();
-        
-        //Store the entity object in sessionStorage where it will be accessible from all pages of your site.
-        sessionStorage.setItem('myUserEntity',JSON.stringify(myUserEntity));
-
-        // searchUsr(profile.getEmail);
-        saveToken(profile.getEmail());
-        // const redirection = await red();
-    }
     
     function searchUsr(correo){
 
@@ -152,16 +113,6 @@
         console.error(err);
         })
     }
-
-    function signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-      console.log('User signed out.');
-    });
-    sessionStorage.clear();
-    auth2.disconnect();
-    window.location.href = '/';
-  }
 
 </script>
 </html>

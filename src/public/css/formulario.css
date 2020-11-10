@@ -168,6 +168,10 @@ input[type="text"], input[type="date"], input[type="time"]
     margin: 0 auto;
   }
 
+.btn-acceder{
+	background: rgba(82, 199, 82, 0.37);
+}
+
 input[type="submit"]{
 	-moz-box-shadow: inset 0px 1px 0px 0px #45D6D6;
 	-webkit-box-shadow: inset 0px 1px 0px 0px #45D6D6;
