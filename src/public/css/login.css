@@ -109,8 +109,8 @@ p{
 
 hr{
     background-color: white;
-    margin: 5%;
-    height: 25px;
+    /* margin: 5%; */
+    /* height: 25px; */
 }
 
 .btn-login:hover{

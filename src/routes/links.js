@@ -1,7 +1,4 @@
-
 const express = require("express");
-const router = express.Router();
-const session = require('express-session');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const config = require('../configs/config');
@@ -34,7 +31,6 @@ app.use(cors());
 *Servidor inicializado
 */
 app.set('llave', config.llave);
-// app.set('view engine', '.ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set('port', process.env.PORT || 3002);
@@ -102,6 +98,8 @@ app.get('/dataUsr', (req, res)=>{ ///:email
 	if(req != null){
 		// const {email} = req.params;
 		const email = req.user.emails[0].value;
+
+		console.log("Ayudaaa "+req.user);
 
 		const usuario = `SELECT * FROM users WHERE Email='${email}'`;
 

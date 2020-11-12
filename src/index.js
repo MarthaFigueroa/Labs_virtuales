@@ -7,7 +7,6 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session');
 const passport = require('passport');
 const mysqlConnection = require('./database');
-const cookieSession = require('cookie-session');
 require('../src/lib/passport');
 const { database } = require('./keys');
 
