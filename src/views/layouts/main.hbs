@@ -17,7 +17,9 @@
 <body>
 
     {{!-- Uso de partials NO hace falta especificar la ruta, puesto que ya está declarada en el index.js --}}
-    {{!-- {{> navigation}} --}}
+    {{#if user}}
+    {{> navigation}}
+    {{/if}}
     {{!-- <% include ../partials/navigation %>
     <% include ../partials/message %> --}}
 

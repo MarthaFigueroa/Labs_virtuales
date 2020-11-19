@@ -132,7 +132,6 @@
                       <div>
                         <!-- @keyup.enter="valueRoom" -->
                         <select id="room" v-model="selected"> 
-                          <!-- -->
                           <!-- Puede ser v-bind:value="option.value" -->
                           {{!-- <option v-for="option in options" :value="option.value">
                             Sala {{ option.value }}
@@ -148,6 +147,8 @@
                   </div>
                 
                 </div>
+
+              </div>
 
                 <button :class="['btn', 'btn-blue', 'reserva', 'px-3']" @click.prevent="requestData" id="bot">RESERVAR →</button>
                   

@@ -137,7 +137,7 @@ select {
     background: #fff url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px;
 }
 
-input[type="text"], input[type="date"], input[type="time"]
+input[type="text"], input[type="date"], input[type="time"], input[type="number"]
 {
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
@@ -156,6 +156,61 @@ input[type="text"], input[type="date"], input[type="time"]
     height: 45px;
 }
 
+/*
+input[type="number"] {
+	-webkit-appearance: textfield;
+	-moz-appearance: textfield;
+	appearance: textfield;
+  }
+  
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+  }
+  
+  .number-input,
+  .number-input * {
+	box-sizing: border-box;
+  }
+  
+  .number-input a {
+	outline:none;
+	-webkit-appearance: none;
+	background-color: transparent;
+	border: none;
+	align-items: center;
+	justify-content: center;
+	width: 3rem;
+	height: 3rem;
+	cursor: pointer;
+	margin: 0;
+  }
+  
+  .number-input a:before,
+  .number-input a:after {
+	display: inline-block;
+	margin-top: 2rem;
+	position: absolute;
+	content: '';
+	width: 1rem;
+	height: 2px;
+	background-color: #212121;
+	transform: translate(-50%, -50%);
+  }
+  .number-input a.plus:after {
+	transform: translate(-50%, -50%) rotate(90deg);
+  }
+  
+  .number-input input[type=number] {
+	font-family: sans-serif;
+	padding: .5rem;
+	border-width: 0 2px;
+	font-size: 1.5rem;
+	height: 3rem;
+	font-weight: bold;
+	text-align: center;
+  }
+*/
 .wrapper--w780 {
     max-width: 780px;
 }

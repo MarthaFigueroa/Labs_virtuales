@@ -31,7 +31,6 @@ passport.use(new GoogleStrategy({
 ));
 
 /*
-
 passport.use('local.signin', new LocalStrategy({
     usernameField: 'username',
     passwordField: 'password',
