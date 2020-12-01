@@ -13,13 +13,28 @@
 
     <div class="wrapper wrapper--w780 my-4">
         <a href="/principal" class="mb-3" style="float: left;">Regresar</a> 
-        <table class="table">
+        <table class="table" id="reservas_table">
             <thead class="bg-primary" style="color: white;">
                 <tr>
                 <th scope="col">#</th>
-                <th scope="col">Asignatura</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Hora</th>
+                <th scope="col" onclick="sortTable(0)">
+                    <div class="div_header">
+                        Asignatura 
+                        <i id="sort_asign" class="pl-2 fa fa-sort-asc sort sort-asc" aria-hidden="true"></i>
+                    </div>
+                </th>
+                <th scope="col" onclick="sortTable(1)">
+                    <div class="div_header">
+                        Fecha
+                        <i id="sort_date" class="pl-2 fa fa-sort-asc sort sort-asc" aria-hidden="true"></i>
+                    </div>
+                </th>
+                <th scope="col" onclick="sortTable(2)">
+                    <div class="div_header">
+                        Hora
+                        <i id="sort_time" class="pl-2 fa fa-sort-asc sort sort-asc" aria-hidden="true"></i>
+                    </div>
+                </th>
                 <th scope="col">Acceder</th>
                 <th scope="col">Cancelar</th>
                 </tr>
@@ -41,4 +56,69 @@
         </table>
     </div>
 </body>
+<script>
+    function sortTable(n) {
+        var table, rows, switching, i, first_td, sec_td, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("reservas_table");
+        switching = true;
+        //Set the sorting direction to ascending:
+        dir = "asc"; 
+        /*Make a loop that will continue until
+        no switching has been done:*/
+
+
+        while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /*Loop through all table rows (except the
+            first, which contains table headers):*/
+            for (i = 1; i < (rows.length - 1); i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+                /*Get the two elements you want to compare,
+                one from current row and one from the next:*/
+                first_td = rows[i].getElementsByTagName("Td")[n];
+                sec_td = rows[i + 1].getElementsByTagName("Td")[n];
+                /*check if the two rows should switch place,
+                based on the direction, asc or desc:*/
+                if (dir == "asc") {
+                    if (first_td.innerHTML.toLowerCase() > sec_td.innerHTML.toLowerCase()) {
+                        //if so, mark as a switch and break the loop:
+                        console.log("Order ASC");
+
+                        let id = document.getElementsByClassName("sort")[n].id;
+                        document.getElementById(id).className = "pl-2 fa fa-sort-desc sort sort-desc";
+                        shouldSwitch= true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (first_td.innerHTML.toLowerCase() < sec_td.innerHTML.toLowerCase()) {
+                        //if so, mark as a switch and break the loop:
+                        console.log("Order DESC");
+                        let id = document.getElementsByClassName("sort")[n].id;
+                        document.getElementById(id).className = "pl-2 fa fa-sort-asc sort sort-asc";
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                /*If a switch has been marked, make the switch
+                and mark that a switch has been done:*/
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                //Each time a switch is done, increase this count by 1:
+                switchcount ++;      
+            } else {
+                /*If no switching has been done AND the direction is "asc",
+                set the direction to "desc" and run the while loop again.*/
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+</script>
 </html>

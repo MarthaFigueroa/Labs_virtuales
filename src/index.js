@@ -75,7 +75,18 @@ const checkUserLoggedIn = (req, res, next) => {
 
 // Auth Routes
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+// app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/', successRedirect: '/formulario_reserva' })
   
+//   function(req, res) {
+    
+//     // const email = req.user.emails[0].value;
+//     res.redirect(`/formulario_reserva`);
+//   }
+  
+// );
+
+
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/failed' }),
   function(req, res) {
     

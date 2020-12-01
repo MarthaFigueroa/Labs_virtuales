@@ -211,6 +211,26 @@ input[type="number"] {
 	text-align: center;
   }
 */
+
+th {
+	cursor: pointer;
+}
+
+.sort-asc{
+	bottom: 0;
+	position: absolute;
+}
+
+.sort-desc{
+	top: 0;
+	position: absolute;
+}
+
+.div_header{
+	display: inline-block;
+	position: relative;
+}
+
 .wrapper--w780 {
     max-width: 780px;
 }
