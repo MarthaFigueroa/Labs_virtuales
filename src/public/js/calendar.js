@@ -161,7 +161,8 @@ async function toHour(cell, room){
         console.log("usuarioooo ",usuario_data.Email);
         let asunto = "Reserva Sala Biblioteca", createBy=usuario_data.Nombre, descripcion=usuario_data.Email;
         let dateCellEnd = new Date(dateCell);
-        dateCellEnd.setHours(dateCellEnd.getHours(), dateCellEnd.getMinutes() +30);
+        dateCell.setHours(dateCell.getHours()-1);
+        dateCellEnd.setHours(dateCellEnd.getHours()-1, dateCellEnd.getMinutes() +30);
         console.log(dateCell, dateCellEnd);
         console.log("Horaaa: ", dateCell);
 
@@ -187,7 +188,7 @@ function timeTable(buttonDate, month, date, year){
 
     createTimeColumn();
 
-    let rooms = {80:false, 81:false, 82:false, 83:false, 84:false, 85:false};
+    let rooms = {86:false, 87:false, 88:false, 89:false};
     // let rooms = [80,81,82,83,84];
     
     for(room in rooms) {

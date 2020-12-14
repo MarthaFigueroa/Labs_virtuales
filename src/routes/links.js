@@ -99,7 +99,7 @@ app.get('/dataUsr', (req, res)=>{ ///:email
 		// const {email} = req.params;
 		const email = req.user.emails[0].value;
 
-		console.log("Ayudaaa "+req.user);
+		// console.log("Ayudaaa "+req.user);
 
 		const usuario = `SELECT * FROM users WHERE Email='${email}'`;
 
@@ -188,53 +188,53 @@ app.post('/aceptar_reserva', rutasProtegidas,  async (req, res, next) => {
 	if (req !== null) {
 
 		let data = req.body.reserva;
-	    let dateS = data.start_time;
-	    let dateE = data.end_time;
-	    let message = "";
-	    let resultS = Math.round(Date.parse(dateS)/1000);
-	    let resultE = Math.round(Date.parse(dateE)/1000);
-	    let elementoID = data.room_id;
-	    let elementoS = (resultS-3600);
-		let elementoE = (resultE-3600);
-		let date_reserva = dateS.split('T');
-		
-		console.log("Fecha Inicio: ",dateS);
-		console.log('Date Inicio', date_reserva[0]);
+		let dateStart = data.start_time;
+		let dateEnd = data.end_time;
+		let dateS = new Date(dateStart);
+		let dateE = new Date(dateEnd);
+		let message = "";
+		let resultS = Math.round(dateS/1000);
+		let resultE = Math.round(dateE/1000);
+		let elementoID = data.room_id;
+		let ev_dateS = new Date(dateS);
+		let ev_dateE = new Date(dateE);
+		let date_reserva = dateStart.split('T');
 
-		let hora = date_reserva[1].split(':');
-		let hora_reserva = hora[0]+':'+hora[1];
-		hora_reserva = hora_reserva.replace(/\s/g, '');
-		console.log('Hora Inicio', hora_reserva);
-		
-		let start_time = new Date (dateS);
-		let end_time = new Date (dateE);
+		console.log("DateS: ", dateS.toLocaleTimeString());
+		console.log("Datee: ", resultS);
+		console.log("Calendar: ", ev_dateS);
+		console.log("Date google Calendar: ", ev_dateS.toLocaleTimeString());
+		// ev_dateS
+		// let hora = date_reserva[1].split(':');
+		// hora[0]= parseInt(hora[0])+1;
+		// let hora_reserva = hora[0]+':'+hora[1];
+		// hora_reserva = hora_reserva.replace(/\s/g, '');
+		// console.log('Hora Inicio', hora_reserva);
 
-		console.log("start_time", start_time);
-		console.log("end_time", end_time);
-
-		start_time.setHours(start_time.getHours()-1);
-		end_time.setHours(end_time.getHours()-1);
-
-		console.log("start_time", start_time);
-		console.log("end_time", end_time);
+		// dateS.setHours(dateS.getHours() + 1)
+		let hora_email = dateS.getHours()+":"+dateS.getMinutes()+dateS.getSeconds();
+		// let hora_email = new Date(hora_email1);
+		// console.log("ayyy: ", hora_email1);
+		console.log("jejeje: ", hora_email);
 
 		var today = new Date();
 		var start = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()+" "+"00:00:00";
 		var end = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()+" "+"23:59:59";
-		
+
 		console.log(start);
 		console.log(end);
+
+		console.log("----------");
+		console.log(resultS);
 		
-		// console.log(new Date (start_time).toLocaleString());
-		// console.log(new Date (end_time).toLocaleString());
 		//SELECT * FROM `mrbs_entry` WHERE description="martha.marquez@alumnos.uneatlantico.es" AND timestamp>="2020-05-25 00:00:00" AND timestamp<="2020-05-25 23:59:59"
 		const reserva1 = `SELECT COUNT(*) as cant FROM mrbs_entry WHERE description='${data.description}' AND timestamp>="${start}" AND timestamp<="${end}"`;
 		// const compare_dates = 'SELECT COUNT(*) as disponibilidad FROM mrbs_entry WHERE room_id =' +elementoID +' AND start_time BETWEEN '+elementoS+' AND '+elementoE;
-		const reserva_usr = `INSERT INTO reservas(room_id, date, time, user)VALUES('${elementoID}', '${date_reserva[0]}', '${hora_reserva}', '${data.description}')`;
+		const reserva_usr = `INSERT INTO reservas(room_id, date, time, user)VALUES('${elementoID}', '${date_reserva[0]}', '${hora_email}', '${data.description}')`;
 		// SELECT COUNT(*) FROM mrbs_entry WHERE room_id =80 AND start_time BETWEEN '1599471000' AND '1599472800'
 		// SELECT * FROM mrbs_entry WHERE start_time BETWEEN '1599469200' AND '1599476400' 
 
-		let demo = mysqlConnection.query('SELECT * FROM mrbs_entry WHERE room_id =' +elementoID +' AND start_time <='+elementoS +' AND end_time >='+elementoE, (err, rows)=>{
+		let demo = mysqlConnection.query('SELECT * FROM mrbs_entry WHERE room_id =' +elementoID +' AND start_time <='+resultS +' AND end_time >='+resultE, (err, rows)=>{
 			if(rows[0]){
 
 				console.log("NO se puede realizar la reserva por falta de disponibilidad");
@@ -253,14 +253,14 @@ app.post('/aceptar_reserva', rutasProtegidas,  async (req, res, next) => {
 							mensaje: "Ya se ha realizado una reserva diaria."
 						});
 					}else{
-						const query = `INSERT INTO mrbs_entry(start_time, end_time, room_id, create_by, name, description)VALUES('${elementoS}', '${elementoE}', '${elementoID}', '${data.create_by}', '${data.name}', '${data.description}')`;
-						const query_id = `SELECT id FROM mrbs_entry WHERE (start_time='${elementoS}'AND end_time='${elementoE}' AND room_id='${elementoID}' AND create_by='${data.create_by}'AND name='${data.name}'AND description='${data.description}')`;
+						const query = `INSERT INTO mrbs_entry(start_time, end_time, room_id, create_by, name, description)VALUES('${resultS}', '${resultE}', '${elementoID}', '${data.create_by}', '${data.name}', '${data.description}')`;
+						const query_id = `SELECT id FROM mrbs_entry WHERE (start_time='${resultS}'AND end_time='${resultE}' AND room_id='${elementoID}' AND create_by='${data.create_by}'AND name='${data.name}'AND description='${data.description}')`;
 						
 						let _id;
 						(async ()=> {
-							mysqlConnection.query(query, [start_time, end_time, elementoID, data.create_by, data.name, data.description], (err) => {
+							mysqlConnection.query(query, [dateS, dateE, elementoID, data.create_by, data.name, data.description], (err) => {
 								if(!err){
-									mysqlConnection.query(reserva_usr, [elementoID, date_reserva[0], hora_reserva, data.description], (err)=> {
+									mysqlConnection.query(reserva_usr, [elementoID, date_reserva[0], hora_email, data.description], (err)=> {
 										if(!err){
 											mysqlConnection.query(query_id, function (err, result, fields) {
 												if (err) throw err;
@@ -268,15 +268,15 @@ app.post('/aceptar_reserva', rutasProtegidas,  async (req, res, next) => {
 												// console.log(result[0].id);
 												_id = result[0].id;
 												console.log("Id: ",_id);
-												// console.log("Start: ",dateS," End:", dateE);
-												
-												sendEmail(_id, data.description, date_reserva[0], hora_reserva); //, data.description
+												console.log("Start: ",dateS.toLocaleTimeString()," End:", dateE.toLocaleTimeString());
+										
+												sendEmail(_id, data.description, date_reserva[0], hora_email); //, data.description
 												// console.log("Id Length: ", _id.length);
 						
 												let evt_id
 												evt_id = "7s7fg4g8e8f9g"+_id+"0000";
 
-												Event(start_time, end_time, elementoID, data.name, data.description, evt_id);
+												Event(ev_dateS, ev_dateE, elementoID, data.name, data.description, evt_id);
 												res.status(200).send({
 													mensaje: "Reserva creada con éxito. ",
 													id: _id,

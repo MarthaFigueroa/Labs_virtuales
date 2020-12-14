@@ -123,12 +123,9 @@
                 <table class="table table-bordered table-responsive text-center">
                   <thead>
                     <th>Hora</th>
-                    <th>Sala 1</th>
-                    <th>Sala 2</th>
-                    <th>Sala 3</th>
-                    <th>Sala 4</th>
-                    <th>Sala 5</th>     
-                    <th>Sala 6</th>                
+                    {{#each labs}}
+                    <th>{{this.room_name}}</th>
+                    {{/each}}           
                   </thead>
                   <tbody id="timeTableBody">
                   </tbody>

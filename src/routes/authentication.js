@@ -80,7 +80,8 @@ router.get('/ReservaEliminada', (req, res)=>{
 router.get('/disponibilidad_reserva', checkUserLoggedIn, async(req, res)=>{
     const email = req.user.emails[0].value;
     const user = await mysqlConnection.query(`SELECT * FROM users WHERE Email='${email}'`);
-    res.render('links/disponibilidad_reserva', { user });
+    const labs = await mysqlConnection.query(`SELECT * FROM mrbs_room WHERE area_id=11`);
+    res.render('links/disponibilidad_reserva', { user, labs });
 });
 
 // router.post('/', isNotLoggedIn, (req, res, next)=>{
