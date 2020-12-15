@@ -43,12 +43,17 @@
                 {{#each reservas}}
                 <tr>
                     <th scope="row">{{ this.id }}</th>
-                    <td>{{ this.room_id }}</td>
+                    <td>{{ this.room_name }}</td>
                     <td>{{ this.date }}</td>
                     <td>{{ this.time }}</td>
-                    <td> <button class="btn btn-acceder">Acceder</button> </td>
+                    <td> 
+                        <a href="../../labs/InDesign.rdp" download="">
+                            <button class="btn btn-acceder">Acceder</button>
+                        </a>
+                        {{!-- <a href="../../public/img/gestion.png" download="">jejeje</a> --}}
+                    </td>
                     {{!-- {{ this.user }} --}}
-                    <td> <button class="btn btn-light">Cancelar</button> </td>
+                    <td> <a href="/delete/{{this.id}}/{{this.user}}" class="btn btn-danger">DELETE LINK</a> </td>
                 </tr>
         
                 {{/each}}

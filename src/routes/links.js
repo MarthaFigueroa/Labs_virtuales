@@ -230,9 +230,12 @@ app.post('/aceptar_reserva', rutasProtegidas,  async (req, res, next) => {
 		//SELECT * FROM `mrbs_entry` WHERE description="martha.marquez@alumnos.uneatlantico.es" AND timestamp>="2020-05-25 00:00:00" AND timestamp<="2020-05-25 23:59:59"
 		const reserva1 = `SELECT COUNT(*) as cant FROM mrbs_entry WHERE description='${data.description}' AND timestamp>="${start}" AND timestamp<="${end}"`;
 		// const compare_dates = 'SELECT COUNT(*) as disponibilidad FROM mrbs_entry WHERE room_id =' +elementoID +' AND start_time BETWEEN '+elementoS+' AND '+elementoE;
-		const reserva_usr = `INSERT INTO reservas(room_id, date, time, user)VALUES('${elementoID}', '${date_reserva[0]}', '${hora_email}', '${data.description}')`;
+		
 		// SELECT COUNT(*) FROM mrbs_entry WHERE room_id =80 AND start_time BETWEEN '1599471000' AND '1599472800'
 		// SELECT * FROM mrbs_entry WHERE start_time BETWEEN '1599469200' AND '1599476400' 
+		const query_roomName = `SELECT room_name FROM mrbs_room WHERE ID =${elementoID}`;
+
+		
 
 		let demo = mysqlConnection.query('SELECT * FROM mrbs_entry WHERE room_id =' +elementoID +' AND start_time <='+resultS +' AND end_time >='+resultE, (err, rows)=>{
 			if(rows[0]){
@@ -255,40 +258,47 @@ app.post('/aceptar_reserva', rutasProtegidas,  async (req, res, next) => {
 					}else{
 						const query = `INSERT INTO mrbs_entry(start_time, end_time, room_id, create_by, name, description)VALUES('${resultS}', '${resultE}', '${elementoID}', '${data.create_by}', '${data.name}', '${data.description}')`;
 						const query_id = `SELECT id FROM mrbs_entry WHERE (start_time='${resultS}'AND end_time='${resultE}' AND room_id='${elementoID}' AND create_by='${data.create_by}'AND name='${data.name}'AND description='${data.description}')`;
-						
+
 						let _id;
 						(async ()=> {
 							mysqlConnection.query(query, [dateS, dateE, elementoID, data.create_by, data.name, data.description], (err) => {
 								if(!err){
-									mysqlConnection.query(reserva_usr, [elementoID, date_reserva[0], hora_email, data.description], (err)=> {
+									mysqlConnection.query(query_roomName, function (err, result, fields) {
 										if(!err){
-											mysqlConnection.query(query_id, function (err, result, fields) {
-												if (err) throw err;
-												
-												// console.log(result[0].id);
-												_id = result[0].id;
-												console.log("Id: ",_id);
-												console.log("Start: ",dateS.toLocaleTimeString()," End:", dateE.toLocaleTimeString());
-										
-												sendEmail(_id, data.description, date_reserva[0], hora_email); //, data.description
-												// console.log("Id Length: ", _id.length);
-						
-												let evt_id
-												evt_id = "7s7fg4g8e8f9g"+_id+"0000";
-
-												Event(ev_dateS, ev_dateE, elementoID, data.name, data.description, evt_id);
-												res.status(200).send({
-													mensaje: "Reserva creada con éxito. ",
-													id: _id,
-													description: data.description
-												});
-											
-											});
-										}	
-									});
+											let name = result[0].room_name;
+											console.log(name);
+											// const reserva_usr = `INSERT INTO reservas(id, room_name, room_id, date, time, user)VALUES('${name}', '${elementoID}', '${date_reserva[0]}', '${hora_email}', '${data.description}')`;
+											// mysqlConnection.query(reserva_usr, [name, elementoID, date_reserva[0], hora_email, data.description], (err)=> {
+												if(!err){
+													mysqlConnection.query(query_id, function (err, result, fields) {
+														if (err) throw err;
+														
+														// console.log(result[0].id);
+														_id = result[0].id;
+														console.log("Id: ",_id);
+														console.log("Start: ",dateS.toLocaleTimeString()," End:", dateE.toLocaleTimeString());
+														const reserva_usr = `INSERT INTO reservas(id, room_name, room_id, date, time, user)VALUES(${_id}, '${name}', '${elementoID}', '${date_reserva[0]}', '${hora_email}', '${data.description}')`;
+														mysqlConnection.query(reserva_usr, [name, elementoID, date_reserva[0], hora_email, data.description], (err)=> {
+															sendEmail(_id, data.description, date_reserva[0], hora_email); //, data.description
+															// console.log("Id Length: ", _id.length);
 									
-								} else {
-									console.log(err);
+															let evt_id
+															evt_id = "7s7fg4g8e8f9g"+_id+"0000";
+			
+															Event(ev_dateS, ev_dateE, elementoID, data.name, data.description, evt_id);
+															res.status(200).send({
+																mensaje: "Reserva creada con éxito. ",
+																id: _id,
+																description: data.description
+															});
+														});	
+													});
+												}	else {
+													console.log(err);
+												}
+																			
+										} 
+									});
 								}
 							});
 						})()
@@ -364,9 +374,11 @@ app.delete('/eliminar_reserva/:_id/:description', (req, res) => {// /:_room_id
 		
 		console.log("--------");  
   
-		   sql=`DELETE FROM mrbs_entry WHERE id = ${_id} AND description= '${description}'`;// 
-		   deleteEvent(evt_id);
-		// sql=`DELETE FROM mrbs_entry ORDER BY id DESC LIMIT 1`;
+		sql=`DELETE FROM mrbs_entry, reservas USING mrbs_entry LEFT JOIN reservas 
+			ON mrbs_entry.id = reservas.id AND mrbs_entry.description = reservas.user
+			WHERE mrbs_entry.id=${_id} AND mrbs_entry.description= '${description}'`;
+		
+		deleteEvent(evt_id);
 
 		mysqlConnection.query(sql, (err, rows)=>{
 			if(err){
@@ -431,9 +443,6 @@ let sendEmail = function(id, mail, day, hour){
 			console.log(error);
 		} else {
 			console.log("Email sent");
-			// sessionStorage.setItem("id_reserva", id);
-			// console.log("My id: ", sessionStorage.getItem("id_reserva"));
-			
 		}
 	});
 
