@@ -9,10 +9,50 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>   
     <link rel="stylesheet" href="./css/formulario.css">
 </head>
+<style>
+    #wrapper {
+  text-align:center;
+  border:1px solid #7F7F7F;
+  width:150px;
+  margin:25px auto;
+  padding:25px;
+  background-color:#E3E4E4;
+}
+
+#myTimer {
+  font:64px Tahoma bold;
+  padding:20px;
+  display:block;
+}
+
+button {
+  width:125px;
+  padding:10px;
+}
+
+.btnEnable {
+  background-color:#E6F9D2;
+  border:1px solid #97DE4C;
+  color:#232323;
+  cursor:pointer;
+}
+
+.btnDisable {
+  background-color:#FCBABA;
+  border:1px solid #DD3939;
+  color:#232323;
+  cursor:wait;
+}
+
+
+</style>
 <body>
 
     <div class="wrapper wrapper--w780 my-4">
         <a href="/principal" class="mb-3" style="float: left;">Regresar</a> 
+
+        {{#if reservas}}
+
         <table class="table text-center" id="reservas_table">
             <thead class="bg-primary" style="color: white;">
                 <tr>
@@ -47,21 +87,64 @@
                     <td>{{ this.date }}</td>
                     <td>{{ this.time }}</td>
                     <td> 
-                        <a href="../../labs/InDesign.rdp" download="">
+                        <a href="/links/download/{{this.room_name}}" download>
                             <button class="btn btn-acceder">Acceder</button>
                         </a>
                         {{!-- <a href="../../public/img/gestion.png" download="">jejeje</a> --}}
                     </td>
                     {{!-- {{ this.user }} --}}
-                    <td> <a href="/delete/{{this.id}}/{{this.user}}" class="btn btn-danger">DELETE LINK</a> </td>
+                    <td> <a href="/delete/{{this.id}}/{{this.user}}" class="btn btn-danger">Cancelar</a> </td>
                 </tr>
         
                 {{/each}}
             </tbody>
         </table>
+         {{else}}
+            <div class="container p-4">
+                <div class="row">
+                    <div class="col-md-4 mx-auto">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h3>Welcome To your Profile {{user.fullname}}</h3>
+                                <h4>{{user.username}}</h4>
+                                <a href="/disponibilidad_reserva" class="btn btn-primary m-4">Realizar Reservas de Laboratorios</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{/if}}
     </div>
+
+    {{!-- <div id="wrapper">
+        <div id="myTimer"></div>
+        <button type="button" id="myBtn" class="btnDisable" disabled onclick="alert('Finally!')">Please wait...</button>
+    </div> --}}
 </body>
 <script>
+/*
+    var sec = 5;
+    var myTimer = document.getElementById('myTimer');
+    var myBtn = document.getElementById('myBtn');
+    window.onload = countDown;
+
+    function countDown() {
+    if (sec < 10) {
+        myTimer.innerHTML = "0" + sec;
+    } else {
+        myTimer.innerHTML = sec;
+    }
+    if (sec <= 0) {
+        $("#myBtn").removeAttr("disabled");
+        $("#myBtn").removeClass().addClass("btnEnable");
+        $("#myTimer").fadeTo(2500, 0);
+        myBtn.innerHTML = "Click Me!";
+        return;
+    }
+    sec -= 1;
+    window.setTimeout(countDown, 1000);
+    }
+*/
     function sortTable(n) {
         var table, rows, switching, i, first_td, sec_td, shouldSwitch, dir, switchcount = 0;
         table = document.getElementById("reservas_table");
@@ -70,8 +153,6 @@
         dir = "asc"; 
         /*Make a loop that will continue until
         no switching has been done:*/
-
-
         while (switching) {
             //start by saying: no switching is done:
             switching = false;

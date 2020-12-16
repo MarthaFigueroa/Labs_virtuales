@@ -34,7 +34,7 @@ router.get('/reservas', checkUserLoggedIn, async (req, res)=>{
     const email = req.user.emails[0].value;
     const reservas = await mysqlConnection.query(`SELECT * FROM reservas WHERE user='${email}'`);
     const user = await mysqlConnection.query(`SELECT * FROM users WHERE Email='${email}'`);
-    if(req!= null){
+    if(reservas[0]){
         console.log(reservas[0].date);
     }
     res.render('links/reservas', { reservas, user });

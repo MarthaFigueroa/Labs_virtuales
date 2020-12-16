@@ -212,10 +212,16 @@ app.post('/aceptar_reserva', rutasProtegidas,  async (req, res, next) => {
 		// console.log('Hora Inicio', hora_reserva);
 
 		// dateS.setHours(dateS.getHours() + 1)
-		let hora_email = dateS.getHours()+":"+dateS.getMinutes()+dateS.getSeconds();
+		let hora_email;
+		if(dateS.getMinutes() == 0){
+			hora_email = dateS.getHours()+":"+dateS.getMinutes()+dateS.getSeconds();
+		}else{
+			hora_email = dateS.getHours()+":"+dateS.getMinutes();
+		}
 		// let hora_email = new Date(hora_email1);
 		// console.log("ayyy: ", hora_email1);
 		console.log("jejeje: ", hora_email);
+		// console.log("jnk: ", date_reserva);
 
 		var today = new Date();
 		var start = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()+" "+"00:00:00";
@@ -286,6 +292,7 @@ app.post('/aceptar_reserva', rutasProtegidas,  async (req, res, next) => {
 															evt_id = "7s7fg4g8e8f9g"+_id+"0000";
 			
 															Event(ev_dateS, ev_dateE, elementoID, data.name, data.description, evt_id);
+															// req.flash('success', 'Reserva Realizada');
 															res.status(200).send({
 																mensaje: "Reserva creada con éxito. ",
 																id: _id,
@@ -306,6 +313,7 @@ app.post('/aceptar_reserva', rutasProtegidas,  async (req, res, next) => {
 				});
 			}
 		})
+
 	}
 });
 
@@ -391,6 +399,12 @@ app.delete('/eliminar_reserva/:_id/:description', (req, res) => {// /:_room_id
 			}
 		});	
 	  }
+});
+
+app.get('/download/:name', (req, res, next) => {
+	const {name} = req.params;
+	res.download(`../Labs_virtuales/src/labs/${name}.rdp`);
+	res.status(200);
 });
 
 app.get('/getUsr', (req, res)=>{
