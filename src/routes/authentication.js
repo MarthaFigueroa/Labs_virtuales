@@ -33,11 +33,15 @@ router.get('/list', async(req, res)=>{
 router.get('/reservas', checkUserLoggedIn, async (req, res)=>{
     const email = req.user.emails[0].value;
     const reservas = await mysqlConnection.query(`SELECT * FROM reservas WHERE user='${email}'`);
+    const reservas_count = await mysqlConnection.query(`SELECT COUNT(*) as total FROM reservas WHERE user='${email}'`);
     const user = await mysqlConnection.query(`SELECT * FROM users WHERE Email='${email}'`);
     if(reservas[0]){
-        console.log(reservas[0].date);
+        console.log(reservas[0]);
     }
-    res.render('links/reservas', { reservas, user });
+
+    console.log(reservas_count[0]);
+
+    res.render('links/reservas', { reservas, user, reservas_count });
 });
 
 router.get('/list', (req, res)=>{
