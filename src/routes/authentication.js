@@ -40,8 +40,9 @@ router.get('/reservas', checkUserLoggedIn, async (req, res)=>{
     }
 
     console.log(reservas_count[0]);
+    const bool = false;
 
-    res.render('links/reservas', { reservas, user, reservas_count });
+    res.render('links/reservas', { reservas, user, reservas_count, bool });
 });
 
 router.get('/list', (req, res)=>{
@@ -61,6 +62,13 @@ router.get('/principal', checkUserLoggedIn, async(req, res)=>{
     const user = await mysqlConnection.query(`SELECT * FROM users WHERE Email='${email}'`);
     console.log(user);
     res.render('principal', { user });
+});
+
+router.get('/navigation', async (req, res)=>{
+    const email = req.user.emails[0].value;
+    const user = await mysqlConnection.query(`SELECT * FROM users WHERE Email='${email}'`);
+    console.log(user);
+    res.render('partials/navigation', { user });
 });
 
 router.get('/add', (req, res)=>{

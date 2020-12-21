@@ -75,24 +75,26 @@ button {
                         <i id="sort_time" class="pl-2 fa fa-sort-asc sort sort-asc" aria-hidden="true"></i>
                     </div>
                 </th>
+                <th scope="col">Id Reserva</th>
                 <th scope="col">Acceder</th>
                 <th scope="col">Cancelar</th>
-                <th scope="col">Cantidad</th>
                 </tr>
             </thead>
             <tbody>
                 {{#each reservas}}
                 <tr>
-                    <th scope="row">{{ this.id }}</th>
+                    <th scope="row">{{formatIndex @index}}</th>
                     <td>{{ this.room_name }}</td>
                     <td>{{ this.date }}</td>
                     <td>{{ this.time }}</td>
-                    <td>{{formatIndex @index}}</td>
-                    <td> 
+                    <td>{{ this.id }}</td>
+                    <button id="getData_{{formatIndex @index}}" onclick="myTimer('{{this.room_name}}' , '{{this.id}}', '{{this.date}} {{this.time}}')" hidden>Prueba</button>
+                    <td id="access-btn-{{formatIndex @index}}"> 
+                        {{!-- {{#if bool}} --}}
                         <a href="/links/download/{{this.room_name}}" download>
-                            <button class="btn btn-acceder" id="{{this.room_name}}_{{this.id}}">Acceder</button>
+                            <button class="btn btn-acceder" id="{{this.room_name}}_{{this.id}}" hidden>Acceder</button>
                         </a>
-                        <button id="getData_{{formatIndex @index}}" onclick="myTimer('{{this.room_name}}' , '{{this.id}}')" hidden>Prueba</button>
+                        {{!-- {{/if}} --}}
                         {{!-- <a href="../../public/img/gestion.png" download="">jejeje</a> --}}
                     </td>
                     {{!-- {{ this.user }} --}}
@@ -101,9 +103,6 @@ button {
         
                 {{/each}}
                 
-                {{#each reservas_count}}
-                    <td>{{this.total}}</td>
-                {{/each}}
             </tbody>
         </table>
          {{else}}
@@ -112,7 +111,7 @@ button {
                     <div class="col-md-4 mx-auto">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h3>Welcome To your Profile {{user.fullname}}</h3>
+                                <h3>No hay ningún laboratorio reservado {{user.fullname}}</h3>
                                 <h4>{{user.username}}</h4>
                                 <a href="/disponibilidad_reserva" class="btn btn-primary m-4">Realizar Reservas de Laboratorios</a>
                             </div>
@@ -123,61 +122,42 @@ button {
         {{/if}}
     </div>
 
-    {{!-- <div id="wrapper">
-        <div id="myTimer"></div>
-        <button type="button" id="myBtn" class="btnDisable" disabled onclick="alert('Finally!')">Please wait...</button>
-    </div> --}}
 </body>
 <script>
-/*
-    var sec = 5;
-    var myTimer = document.getElementById('myTimer');
-    var myBtn = document.getElementById('myBtn');
-    window.onload = countDown;
 
-    function countDown() {
-    if (sec < 10) {
-        myTimer.innerHTML = "0" + sec;
-    } else {
-        myTimer.innerHTML = sec;
-    }
-    if (sec <= 0) {
-        $("#myBtn").removeAttr("disabled");
-        $("#myBtn").removeClass().addClass("btnEnable");
-        $("#myTimer").fadeTo(2500, 0);
-        myBtn.innerHTML = "Click Me!";
-        return;
-    }
-    sec -= 1;
-    window.setTimeout(countDown, 1000);
-    }
-*/
+    const cant = [ {{#each reservas}} "{{this}}", {{/each}} ];
 
     window.onload = function myFunction() {
-        for(let i=1; i<5; i++){
+        for(let i=1; i<=cant.length; i++){
             document.getElementById("getData_"+i).click();
         }
     }
     
-    function myTimer(room_name, id_lab) {
+    function myTimer(room_name, id_lab, start) {
 
         let id = room_name+"_"+id_lab;
-        console.log("id");
+        console.log("id "+id);
+        let start_time = new Date(start);
+        let end_time = new Date(start);
+        end_time.setMinutes(end_time.getMinutes()+21);
+        console.log("Start Time: ", start_time);
+        console.log("End Time: ", end_time);
 
-        var d1 = new Date();
-        var d2 = new Date();
-        var d3 = new Date();
+        var today = new Date();
+        //var d2 = new Date();
+        //var d3 = new Date();
         
-        d2.setHours(12, 20, 00);
-        d3.setHours(13, 12, 00);
+        //d2.setHours(11, 20, 00);
+        //d3.setHours(13, 12, 00);
         
 
-        if(d1.getTime() >= d2.getTime() && d1.getTime() <= d3.getTime()){
+        if(today.getTime() >= start_time.getTime() && today.getTime() <= end_time.getTime()){
             document.getElementById(id).disabled = false;
+            document.getElementById(id).hidden = false;
         }else{
             document.getElementById(id).disabled = true;
+            document.getElementById(id).hidden = true;
         }
-        //document.getElementById("demo").innerHTML = d1.toLocaleTimeString();
     }
 
     function sortTable(n) {

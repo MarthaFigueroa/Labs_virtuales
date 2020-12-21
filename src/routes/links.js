@@ -292,7 +292,8 @@ app.post('/aceptar_reserva', rutasProtegidas,  async (req, res, next) => {
 															evt_id = "7s7fg4g8e8f9g"+_id+"0000";
 			
 															Event(ev_dateS, ev_dateE, elementoID, data.name, data.description, evt_id);
-															// req.flash('success', 'Reserva Realizada');
+															req.flash('success', 'Reserva Realizada');
+															
 															res.status(200).send({
 																mensaje: "Reserva creada con éxito. ",
 																id: _id,

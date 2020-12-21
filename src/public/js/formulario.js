@@ -283,7 +283,7 @@ const app = new Vue({
                 console.log("Id: ",id_reserva);
                 sessionStorage.setItem("id_reserva",id_reserva);
                 // this.signOut();
-                window.location.href = '/ReservaExitosa';
+                // window.location.href = '/ReservaExitosa';
               }
             })
             .catch(function(err) {
