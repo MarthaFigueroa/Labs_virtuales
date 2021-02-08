@@ -70,8 +70,8 @@ function showCalendar(month, year) {
 
         //creating individual cells, filing them up with data.
         for (let j = 0; j < 7; j++) {
+          let cell = document.createElement("td");
             if (i === 0 && j < firstDay) {
-                let cell = document.createElement("td");
                 let cellText = document.createTextNode("");
                 cell.appendChild(cellText);
                 row.appendChild(cell);
@@ -81,7 +81,6 @@ function showCalendar(month, year) {
             }
 
             else {
-                let cell = document.createElement("td");
                 cell.setAttribute("class", "day");
                 cell.setAttribute("data-toggle", "modal");
                 cell.setAttribute("data-target", "#exampleModal");
@@ -352,7 +351,7 @@ function fetchData(room, startTime, endTime, onData){
         };
 
         displayDisponibilidad(disponibilidad);
-        console.error(err);
+          console.error("GG",err);
     });
 }
 
@@ -430,8 +429,6 @@ function requestData(reserva){
             document.getElementById('no_reserva').click();
             document.getElementById("modal-content").innerHTML = `
             SU SESIÓN HA EXPIRADO, VUELVA A INICIAR SESIÓN.`;
-            // document.getElementById("modal-button").innerHTML = `<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>`;
-
             setTimeout(function(){ 
               window.location.href = '/';
             }, 2000);
@@ -448,8 +445,6 @@ function requestData(reserva){
             let id_reserva = data.id;
             console.log("Id: ",id_reserva);
             sessionStorage.setItem("id_reserva",id_reserva);
-            // this.signOut();
-            // window.location.href = '/ReservaExitosa';
           }
         })
         .catch(function(err) {
@@ -461,8 +456,6 @@ function requestData(reserva){
         NO SE HA REALIZADO LA RESERVA.
         <br>
         POR FAVOR VUELVA A INTENTAR INGRESANDO UNA HORA VÁLIDA.`;
-        // document.getElementById("modal-button").innerHTML = `<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>`;
-        // alert("You have entered an invalid hour!"); // document.form1.email.focus();
       }
     }
     else{
@@ -472,45 +465,13 @@ function requestData(reserva){
       <br>
       POR FAVOR VUELVA A INTENTAR INGRESANDO UNA DIRECCIÓN DE CORREO VÁLIDA.`;
       document.getElementById("modal-button").innerHTML = `<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>`;
-      // alert("You have entered an invalid email address!"); // document.form1.email.focus();
     }
   }
-
-  // function getUsr(){
-  //   let url2 = `http://localhost:3000/links/getUsr`;// 
-
-  //       fetch(url2,{
-  //         method: 'GET',            
-  //         headers: {
-  //           'Access-Control-Allow-Origin': '*',
-  //           'Content-type': 'application/json'
-  //         },
-  //         mode: 'cors',
-  //         cache: 'no-cache'
-  //       })
-  //       .then(response => {
-  //           return response.json();
-  //       })
-  //       .then((data) => {
-  //           var data = data;
-  //           // document.getElementById('correo').value = data.email;
-  //           infoUsr(data.email);
-  //           // console.log(data);
-  //           return data.email;
-  //       })
-  //       .catch(function(err) {
-  //           console.error(err);
-  //       });
-  // }
-
-  // $(document).ready(getUsr()); 
 
   function infoUsr(){
 
     var url = `http://localhost:3000/links/dataUsr`; //  /${correo}
 
-    // console.log("Correo: ", correo);
-    // this.preventDef();
     return fetch(url,{
     method: 'GET',            
     headers: {
@@ -523,9 +484,7 @@ function requestData(reserva){
     .then(response => {
       return response.json();
     }).then((data) => {
-      //document.getElementById('email').innerHTML = data.info[0].Email;
       console.log("Data del usuario: ",data.info[0]);
-      // getData(data.info[0].Nombre, data.info[0].Email);
       return data.info[0];
     })
     .catch(function(err) {

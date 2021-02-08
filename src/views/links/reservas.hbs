@@ -9,43 +9,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>   
     <link rel="stylesheet" href="./css/formulario.css">
 </head>
-<style>
-    #wrapper {
-  text-align:center;
-  border:1px solid #7F7F7F;
-  width:150px;
-  margin:25px auto;
-  padding:25px;
-  background-color:#E3E4E4;
-}
-
-#myTimer {
-  font:64px Tahoma bold;
-  padding:20px;
-  display:block;
-}
-
-button {
-  width:125px;
-  padding:10px;
-}
-
-.btnEnable {
-  background-color:#E6F9D2;
-  border:1px solid #97DE4C;
-  color:#232323;
-  cursor:pointer;
-}
-
-.btnDisable {
-  background-color:#FCBABA;
-  border:1px solid #DD3939;
-  color:#232323;
-  cursor:wait;
-}
-
-
-</style>
 <body>
 
     <div class="wrapper wrapper--w780 my-4">
@@ -94,15 +57,10 @@ button {
                         <a href="/links/download/{{this.room_name}}" download>
                             <button class="btn btn-acceder" id="{{this.room_name}}_{{this.id}}" hidden>Acceder</button>
                         </a>
-                        {{!-- {{/if}} --}}
-                        {{!-- <a href="../../public/img/gestion.png" download="">jejeje</a> --}}
                     </td>
-                    {{!-- {{ this.user }} --}}
                     <td> <a href="/delete/{{this.id}}/{{this.user}}" class="btn btn-danger">Cancelar</a> </td>
                 </tr>
-        
                 {{/each}}
-                
             </tbody>
         </table>
          {{else}}
@@ -125,6 +83,7 @@ button {
 </body>
 <script>
 
+    //Get 'reservas' object and then get their length
     const cant = [ {{#each reservas}} "{{this}}", {{/each}} ];
 
     window.onload = function myFunction() {
@@ -137,26 +96,21 @@ button {
 
         let id = room_name+"_"+id_lab;
         console.log("id "+id);
-        let start_time = new Date(start);
+        let start_time = new Date(start); //Start_time reserva
         let end_time = new Date(start);
-        end_time.setMinutes(end_time.getMinutes()+21);
+        end_time.setMinutes(end_time.getMinutes()+30);
         console.log("Start Time: ", start_time);
         console.log("End Time: ", end_time);
 
         var today = new Date();
-        //var d2 = new Date();
-        //var d3 = new Date();
         
-        //d2.setHours(11, 20, 00);
-        //d3.setHours(13, 12, 00);
-        
-
         if(today.getTime() >= start_time.getTime() && today.getTime() <= end_time.getTime()){
             document.getElementById(id).disabled = false;
             document.getElementById(id).hidden = false;
         }else{
-            document.getElementById(id).disabled = true;
-            document.getElementById(id).hidden = true;
+            document.getElementById(id).remove();
+            //document.getElementById(id).disabled = true;
+            //document.getElementById(id).hidden = true;
         }
     }
 

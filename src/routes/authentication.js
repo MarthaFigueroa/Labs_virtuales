@@ -98,7 +98,7 @@ router.get('/disponibilidad_reserva', checkUserLoggedIn, async(req, res)=>{
     res.render('links/disponibilidad_reserva', { user, labs });
 });
 
-router.get('/delete/:id/:description', isLoggedIn, async(req, res)=>{
+router.get('/delete/:id/:description', async(req, res)=>{
     console.log(req.params.id);
     const {id, description} = req.params;
 
